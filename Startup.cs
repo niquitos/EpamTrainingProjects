@@ -1,30 +1,43 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using TrainingApi.Data;
 
 namespace TrainingApi
 {
+    /// <summary>
+    /// Stores configuration, adds services and configures HTTP request pipeline
+    /// </summary>
     public class Startup
     {
+        #region Properties
+        /// <summary>
+        /// A set of key-value application configuration properties privided by the constructor
+        /// </summary>
+        public IConfiguration Configuration { get; }
+        #endregion
+
+        #region Constructors
+        /// <summary>
+        /// Startup constructor. Accepts configuration and saves it Configuration property
+        /// </summary>
+        /// <param name="configuration">A set of key-value application configuration properties</param>
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
+        #endregion
 
-        public IConfiguration Configuration { get; }
+        #region Methods
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        /// <summary>
+        /// Adds services to the container
+        /// </summary>
+        /// <param name="services">A collection of service descriptors</param>
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -34,11 +47,16 @@ namespace TrainingApi
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// <summary>
+        /// Configures the HTTp request pipeline
+        /// </summary>
+        /// <param name="app">A class that provides the mechanisms to configure an application's request pipeline</param>
+        /// <param name="env">Information about webhosting environment an application is running in</param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -68,5 +86,6 @@ namespace TrainingApi
                 endpoints.MapRazorPages();
             });
         }
+        #endregion
     }
 }
