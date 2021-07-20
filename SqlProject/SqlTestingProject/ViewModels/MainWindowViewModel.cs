@@ -19,6 +19,8 @@ namespace SqlTestingProject.ViewModels
         }
 
         private string _prevModuleName = "Prev Module";
+        
+
         public string PrevModuleName
         {
             get { return _prevModuleName; }
@@ -26,15 +28,16 @@ namespace SqlTestingProject.ViewModels
         }
 
         #region Commands
+        private DelegateCommand? _moveToNextModule;
+        public DelegateCommand MoveToNextModule => _moveToNextModule ??= new DelegateCommand(ExecuteMoveToNextModule);
 
-        public DelegateCommand MoveToNextModule { get; }
-        public DelegateCommand MoveToPrevModule { get; }
+        private DelegateCommand? _moveToPrevModule;
+        public DelegateCommand MoveToPrevModule => _moveToPrevModule ??= new DelegateCommand(ExecuteMoveToPrevModule);
         #endregion
 
         public MainWindowViewModel(IRegionManager regionManager) : base(regionManager)
-        {
-            MoveToNextModule = new DelegateCommand(ExecuteMoveToNextModule);
-            MoveToPrevModule = new DelegateCommand(ExecuteMoveToPrevModule);
+        { 
+            
         }
 
         private void ExecuteMoveToNextModule()
