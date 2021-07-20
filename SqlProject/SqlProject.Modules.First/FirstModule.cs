@@ -2,6 +2,7 @@
 using Prism.Modularity;
 using Prism.Regions;
 using SqlProject.CoreLibrary.Regions;
+using SqlProject.Modules.First.Infrastructure.Repositories;
 using SqlProject.Modules.First.ViewModels;
 using SqlProject.Modules.First.Views;
 
@@ -23,6 +24,7 @@ namespace SqlProject.Modules.First
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterForNavigation<FirstTest, FirstTestViewModel>("FirstTestView");
+            containerRegistry.RegisterSingleton<IDataTablesRepository, DataTablesRepository>();
         }
     }
 }
