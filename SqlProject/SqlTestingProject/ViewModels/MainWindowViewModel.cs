@@ -8,51 +8,70 @@ namespace SqlTestingProject.ViewModels
     public class MainWindowViewModel : RegionViewModelBase
     {
         public string Title { get; set; } = "Sql Testing Project";
-        private int _viewsIndex = 0;
-        private string[] _viewsNames = { "FirstTestView", "SecondTestView" };
+
+        private string[] _viewsNames = { "FirstTestView", "SecondTestView", "ThirdTestView" };
+
+        #region Raising properties
+        private int _viewsIndex;
+        public int ViewsIndex
+        {
+            get => _viewsIndex;
+            set
+            {
+                _ = SetProperty(ref _viewsIndex, value);
+                MoveToNextModule.RaiseCanExecuteChanged();
+                MoveToPrevModule.RaiseCanExecuteChanged();
+            }
+        }
 
         private string _nextModuleName = "Next Module";
         public string NextModuleName
         {
-            get { return _nextModuleName; }
-            set { _ = SetProperty(ref _nextModuleName, value); }
+            get => _nextModuleName;
+            set => _ = SetProperty(ref _nextModuleName, value);
         }
 
         private string _prevModuleName = "Prev Module";
-        
-
         public string PrevModuleName
         {
             get { return _prevModuleName; }
             set { _ = SetProperty(ref _prevModuleName, value); }
         }
+        #endregion
 
         #region Commands
         private DelegateCommand? _moveToNextModule;
-        public DelegateCommand MoveToNextModule => _moveToNextModule ??= new DelegateCommand(ExecuteMoveToNextModule);
+        public DelegateCommand MoveToNextModule => _moveToNextModule ??= new DelegateCommand(ExecuteMoveToNextModule, CanExecuteMoveToNextModule);
 
         private DelegateCommand? _moveToPrevModule;
-        public DelegateCommand MoveToPrevModule => _moveToPrevModule ??= new DelegateCommand(ExecuteMoveToPrevModule);
+        public DelegateCommand MoveToPrevModule => _moveToPrevModule ??= new DelegateCommand(ExecuteMoveToPrevModule, CanExecuteMoveToPrevModule);
         #endregion
 
         public MainWindowViewModel(IRegionManager regionManager) : base(regionManager)
-        { 
-            
+        {
+
         }
 
+        #region Methods
         private void ExecuteMoveToNextModule()
         {
-            if (_viewsIndex < _viewsNames.Length - 1)
-            {
-                _viewsIndex++; RegionManager.RequestNavigate(RegionNames.ContentRegion, _viewsNames[_viewsIndex]);
-            }
+            ViewsIndex++;
+            RegionManager.RequestNavigate(RegionNames.ContentRegion, _viewsNames[ViewsIndex]);
+        }
+
+        private bool CanExecuteMoveToNextModule()
+        {
+            return ViewsIndex < _viewsNames.Length - 1;
         }
         private void ExecuteMoveToPrevModule()
         {
-            if (_viewsIndex > 0)
-            {
-                _viewsIndex--; RegionManager.RequestNavigate(RegionNames.ContentRegion, _viewsNames[_viewsIndex]);
-            }
+            ViewsIndex--;
+            RegionManager.RequestNavigate(RegionNames.ContentRegion, _viewsNames[ViewsIndex]);
         }
+        private bool CanExecuteMoveToPrevModule()
+        {
+            return ViewsIndex > 0;
+        } 
+        #endregion
     }
 }

@@ -20,6 +20,7 @@
     <ProjectReference Include="..\SqlProject.CoreLibrary\SqlProject.CoreLibrary.csproj" />
     <ProjectReference Include="..\SqlProject.Modules.First\SqlProject.Modules.First.csproj" />
     <ProjectReference Include="..\SqlProject.Modules.Second\SqlProject.Modules.Second.csproj" />
+    <ProjectReference Include="..\SqlProject.Modules.Third\SqlProject.Modules.Third.csproj" />
   </ItemGroup>
 
 </Project>
