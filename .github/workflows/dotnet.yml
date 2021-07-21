@@ -1,15 +1,12 @@
 name: .NET
 
-on:
-  push:
-    branches: [ master, dev, feature ]
-  pull_request:
-    branches: [ master, dev, feature ]
+on: [push, pull_request]
 
 jobs:
   build:
-
-    runs-on: ubuntu-latest
+    name: Initialize build on .NET5
+    
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -17,9 +14,13 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
+        
     - name: Restore dependencies
       run: dotnet restore
+      
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build -c Release --no-restore
+      
+
     - name: Test
       run: dotnet test --no-build --verbosity normal
