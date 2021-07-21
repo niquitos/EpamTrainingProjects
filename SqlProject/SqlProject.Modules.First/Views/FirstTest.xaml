@@ -22,7 +22,7 @@
             </ListBox.ItemTemplate>
         </ListBox>
         <DataGrid Grid.Column="1" ItemsSource="{Binding DataTablesRepository.RecipesList}" ColumnWidth="*"
-                  SelectedItem="{Binding ElementName=_itemsList,Path=SelectedItem}"/>
+                  SelectedItem="{Binding ElementName=_itemsList,Path=SelectedItem}" CanUserAddRows="False"/>
         <!--<TextBlock Text="{Binding WelcomeMessage}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24"/>-->
     </Grid>
 </UserControl>
