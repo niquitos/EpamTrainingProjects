@@ -38,7 +38,7 @@ namespace SqlProject.Modules.First.ViewModels
 
         private void ExecuteConnectToDataBase()
         {
-            DataTablesRepository.RecipesList = DataService.GetData();
+            DataTablesRepository.RecipesList = DataService.GetData("Data\\DataCsv.csv");
         }
     }
 }

@@ -29,9 +29,6 @@ namespace SqlProject.Modules.First
 
             //read from csv
             containerRegistry.RegisterSingleton<IDataService, CsvDataService>();
-
-            //read from sql
-            //containerRegistry.RegisterSingleton<IDataService, SqlDataService>();
         }
     }
 }

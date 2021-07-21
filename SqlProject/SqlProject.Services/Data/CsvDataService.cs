@@ -5,10 +5,9 @@ namespace SqlProject.Services.Data
 {
     public class CsvDataService : IDataService
     {
-        public string Source { get; set; } = "Data\\DataCsv.csv";
-        public DataTable? GetData()
+        public DataTable? GetData(string connectionString)
         {
-            using (TextFieldParser parser = new(Source))
+            using (TextFieldParser parser = new(connectionString))
             {
                 DataTable dt = new();
 
