@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   build:
-    name: Initialize build on .NET5
+    name: Initialize build on .NET6
     
     runs-on: windows-latest
 
@@ -13,7 +13,8 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.0.x
+        dotnet-version: '6.0.x'
+        include-prerelease: true
         
     - name: Restore dependencies
       run: dotnet restore
@@ -21,6 +22,5 @@ jobs:
     - name: Build
       run: dotnet build -c Release --no-restore
       
-
     - name: Test
       run: dotnet test --no-build --verbosity normal
