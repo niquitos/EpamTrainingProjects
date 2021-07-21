@@ -5,11 +5,9 @@ namespace SqlProject.Services.Data
 {
     public class SqlDataService : IDataService
     {
-        public string Source { get; set; } = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=Recipes;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-
-        public DataTable? GetData()
+        public DataTable? GetData(string connectionString)
         {
-            using (SqlConnection sq = new(Source))
+            using (SqlConnection sq = new(connectionString))
             using (SqlDataAdapter adapter = new("SELECT * FROM Recipe", sq))
             {
                 DataTable recipeTable = new();
