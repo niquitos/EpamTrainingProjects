@@ -8,10 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Data\DataCsv.csv" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Prism.Core" Version="8.1.97" />
     <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
   </ItemGroup>
@@ -21,12 +17,6 @@
     <ProjectReference Include="..\SqlProject.Modules.First\SqlProject.Modules.First.csproj" />
     <ProjectReference Include="..\SqlProject.Modules.Second\SqlProject.Modules.Second.csproj" />
     <ProjectReference Include="..\SqlProject.Modules.Third\SqlProject.Modules.Third.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="Data\DataCsv.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
   </ItemGroup>
 
 </Project>

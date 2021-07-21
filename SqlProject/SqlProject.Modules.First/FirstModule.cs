@@ -28,10 +28,10 @@ namespace SqlProject.Modules.First
             containerRegistry.RegisterSingleton<IDataTablesRepository, DataTablesRepository>();
 
             //read from csv
-            //containerRegistry.RegisterSingleton<IDataService, CsvDataService>();
+            containerRegistry.RegisterSingleton<IDataService, CsvDataService>();
 
             //read from sql
-            containerRegistry.RegisterSingleton<IDataService, SqlDataService>();
+            //containerRegistry.RegisterSingleton<IDataService, SqlDataService>();
         }
     }
 }
