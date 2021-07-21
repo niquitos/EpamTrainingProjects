@@ -20,6 +20,7 @@ jobs:
       
     - name: Build
       run: dotnet build -c Release --no-restore
+      working-directory: SqlProject/SqlTestingProject
       
     - name: Test
       run: dotnet test --no-build --verbosity normal
