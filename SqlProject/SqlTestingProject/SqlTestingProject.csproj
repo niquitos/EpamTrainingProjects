@@ -2,8 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows10.0.20348.0</TargetFramework>
-    <Nullable>enable</Nullable>
+    <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <StartupObject>SqlTestingProject.App</StartupObject>
   </PropertyGroup>
@@ -14,10 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Modules\SqlProject.Modules.First\SqlProject.Modules.First.csproj" />
+    <ProjectReference Include="..\Modules\SqlProject.Modules.Second\SqlProject.Modules.Second.csproj" />
+    <ProjectReference Include="..\Modules\SqlProject.Modules.Third\SqlProject.Modules.Third.csproj" />
     <ProjectReference Include="..\SqlProject.CoreLibrary\SqlProject.CoreLibrary.csproj" />
-    <ProjectReference Include="..\SqlProject.Modules.First\SqlProject.Modules.First.csproj" />
-    <ProjectReference Include="..\SqlProject.Modules.Second\SqlProject.Modules.Second.csproj" />
-    <ProjectReference Include="..\SqlProject.Modules.Third\SqlProject.Modules.Third.csproj" />
   </ItemGroup>
 
 </Project>
