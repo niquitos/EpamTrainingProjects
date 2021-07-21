@@ -22,6 +22,7 @@ namespace SqlTestingProject
         {
             moduleCatalog.AddModule<SqlProject.Modules.First.FirstModule>();
             moduleCatalog.AddModule<SqlProject.Modules.Second.SecondModule>();
+            moduleCatalog.AddModule<SqlProject.Modules.Third.ThirdModule>();
         }
     }
 }

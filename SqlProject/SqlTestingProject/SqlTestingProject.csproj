@@ -2,13 +2,13 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net5.0-windows7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Data\" />
+    <None Remove="Data\DataCsv.csv" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,6 +20,13 @@
     <ProjectReference Include="..\SqlProject.CoreLibrary\SqlProject.CoreLibrary.csproj" />
     <ProjectReference Include="..\SqlProject.Modules.First\SqlProject.Modules.First.csproj" />
     <ProjectReference Include="..\SqlProject.Modules.Second\SqlProject.Modules.Second.csproj" />
+    <ProjectReference Include="..\SqlProject.Modules.Third\SqlProject.Modules.Third.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Data\DataCsv.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>
