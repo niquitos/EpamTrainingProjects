@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31512.422
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31515.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SqlProject", "SqlProject", "{279ED2D3-CD77-4909-9CDA-4C30D711F4CE}"
 EndProject
@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlProject.Modules.Second",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlProject.Modules.Third", "SqlProject\Modules\SqlProject.Modules.Third\SqlProject.Modules.Third.csproj", "{413E99FB-0931-4629-BAE2-EC817775349C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainingApi", "Trainig_Api\TrainingApi\TrainingApi.csproj", "{64AA6005-6764-4670-A90C-47134FA189A7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainingApi", "Trainig_Api\TrainingApi\TrainingApi.csproj", "{BD307BF2-E511-4043-B8F9-22585301CC7C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,10 +55,10 @@ Global
 		{413E99FB-0931-4629-BAE2-EC817775349C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{413E99FB-0931-4629-BAE2-EC817775349C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{413E99FB-0931-4629-BAE2-EC817775349C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{64AA6005-6764-4670-A90C-47134FA189A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{64AA6005-6764-4670-A90C-47134FA189A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{64AA6005-6764-4670-A90C-47134FA189A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{64AA6005-6764-4670-A90C-47134FA189A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD307BF2-E511-4043-B8F9-22585301CC7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD307BF2-E511-4043-B8F9-22585301CC7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD307BF2-E511-4043-B8F9-22585301CC7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD307BF2-E511-4043-B8F9-22585301CC7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -72,7 +72,7 @@ Global
 		{08A95ECD-2675-481A-BE57-3D9A81017CD0} = {1B6640BB-6A12-4445-B5CF-355BB566B5D2}
 		{F15C5637-6BF9-4D72-A4F1-FA2B19712C00} = {1B6640BB-6A12-4445-B5CF-355BB566B5D2}
 		{413E99FB-0931-4629-BAE2-EC817775349C} = {1B6640BB-6A12-4445-B5CF-355BB566B5D2}
-		{64AA6005-6764-4670-A90C-47134FA189A7} = {A3D3757C-A41E-4DE6-A449-7B1BC3028663}
+		{BD307BF2-E511-4043-B8F9-22585301CC7C} = {A3D3757C-A41E-4DE6-A449-7B1BC3028663}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {24527FAC-F5E9-49D3-A3AF-9AC5B288C38C}

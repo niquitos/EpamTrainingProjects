@@ -17,6 +17,7 @@
     <ProjectReference Include="..\Modules\SqlProject.Modules.Second\SqlProject.Modules.Second.csproj" />
     <ProjectReference Include="..\Modules\SqlProject.Modules.Third\SqlProject.Modules.Third.csproj" />
     <ProjectReference Include="..\SqlProject.CoreLibrary\SqlProject.CoreLibrary.csproj" />
+    <ProjectReference Include="..\SqlProject.Services\SqlProject.Services.csproj" />
   </ItemGroup>
 
 </Project>
