@@ -4,4 +4,18 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Data\DataCsv.csv" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Data\DataCsv.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\SqlProject\SqlProject.Services\SqlProject.Services.csproj" />
+  </ItemGroup>
+
 </Project>
