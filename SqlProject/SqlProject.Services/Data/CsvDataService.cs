@@ -5,7 +5,7 @@ namespace SqlProject.Services.Data
 {
     public class CsvDataService : IDataService
     {
-        public DataTable? GetData(string connectionString)
+        public DataTable GetData(string connectionString)
         {
             using (TextFieldParser parser = new(connectionString))
             {
