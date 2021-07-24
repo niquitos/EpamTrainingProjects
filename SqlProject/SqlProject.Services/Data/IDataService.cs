@@ -4,6 +4,6 @@ namespace SqlProject.Services.Data
 {
     public interface IDataService
     {
-        DataTable? GetData(string connectionString);
+        DataTable GetData(string connectionString);
     }
 }

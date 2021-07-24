@@ -10,12 +10,16 @@
 
   <ItemGroup>
     <Content Include="Data\DataCsv.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\SqlProject\SqlProject.Services\SqlProject.Services.csproj" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TrainingApi.Services\TrainingApi.Services.csproj" />
   </ItemGroup>
 
 </Project>

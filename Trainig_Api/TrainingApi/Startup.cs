@@ -1,13 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using TrainingApi.Mapping;
+using TrainingApi.Models;
+using TrainingApi.Services;
 
 namespace TrainingApi
 {
@@ -24,6 +22,7 @@ namespace TrainingApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddSingleton<IDataService<EmployeeModel>, ScvDataService<EmployeeModel,EmployeeModelMap>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
