@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\SqlProject\SqlProject.Services\SqlProject.Services.csproj" />
+    <ProjectReference Include="..\TrainingApi.Services\TrainingApi.Services.csproj" />
   </ItemGroup>
 
 </Project>
