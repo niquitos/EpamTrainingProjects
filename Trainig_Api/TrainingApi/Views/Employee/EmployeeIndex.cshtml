@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Employee page";
+    string[] tableHaeders = new string[] { "Id", "First Name", "Last Name", "Age", "Email" };
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -9,28 +10,28 @@
 <h4>Employee Table</h4>
 <hr />
 <div class="container">
-   <div class="row">
-       <table>
+   <div class="table">
+       <table class="table table-bordered table-hover">
            <thead>
                <tr>
-                   <td>Id</td>
-                   <td>FirstName</td>
-                   <td>LastName</td>
-                   <td>Age</td>
-                   <td>EmailAdress</td>
+                   @foreach (var h in tableHaeders)
+                   {
+                       <th>@h</th>
+                   }
                </tr>
            </thead>
-               
-           @foreach (var empl in Model)
-           {
-               <tr>
-                   <td>@empl.EmployeeId</td>
-                   <td>@empl.FirstName</td>
-                   <td>@empl.LastName</td>
-                   <td>@empl.Age</td>
-                   <td>@empl.EmailAdress</td>
-               </tr>
-           }
+           <tbody>
+               @foreach (var empl in Model)
+               {
+                   <tr>
+                       <td>@empl.EmployeeId</td>
+                       <td>@empl.FirstName</td>
+                       <td>@empl.LastName</td>
+                       <td>@empl.Age</td>
+                       <td>@empl.EmailAdress</td>
+                   </tr>
+               }
+           </tbody>
        </table>
    </div>
 </div>

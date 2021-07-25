@@ -1,7 +1,9 @@
 ﻿using CsvHelper;
 using CsvHelper.Configuration;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -15,6 +17,8 @@ namespace TrainingApi.Services
         public string ConnectionString { get; set; }
 
         public List<TModel> Data { get; set; }
+
+        public Func<DataRow, TModel> CreateInstance { get; set; }
 
         public ScvDataService(IConfiguration configuration)
         {
@@ -49,5 +53,9 @@ namespace TrainingApi.Services
             }
         }
 
+        public void Configure(Func<DataRow, TModel> action)
+        {
+            CreateInstance = action;
+        }
     }
 }

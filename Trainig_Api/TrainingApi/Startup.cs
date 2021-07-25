@@ -22,7 +22,9 @@ namespace TrainingApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddSingleton<IDataService<EmployeeModel>, ScvDataService<EmployeeModel,EmployeeModelMap>>();
+            services.AddSingleton<IDataService<EmployeeModel>, ScvDataService<EmployeeModel, EmployeeModelMap>>();
+            //services.AddSingleton<IDataService<EmployeeModel>, SqlDataService<EmployeeModel>>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using TrainingApi.Models;
 using TrainingApi.Services;
 
@@ -22,9 +23,21 @@ namespace TrainingApi.Controllers
 
         public ActionResult EmployeeIndex()
         {
-            DataService.ConnectionString = "Data\\DataCsv.csv";
+            DataService.CreateInstance = CreateInstanceSql;
             IEnumerable<EmployeeModel> data = DataService.GetData();
             return View(data);
+        }
+
+        private EmployeeModel CreateInstanceSql(DataRow row)
+        {
+            return new EmployeeModel
+            {
+                EmployeeId = Convert.ToInt32(row["EmployeeId"]),
+                FirstName = row["FirstName"].ToString(),
+                LastName = row["LastName"].ToString(),
+                Age = Convert.ToInt32(row["Age"]),
+                EmailAdress = row["EmailAdress"].ToString()
+            };
         }
 
         // GET: EmployeeController/Details/5
