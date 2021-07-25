@@ -22,8 +22,8 @@ namespace TrainingApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            //services.AddSingleton<IDataService<EmployeeModel>, ScvDataService<EmployeeModel, EmployeeModelMap>>();
-            services.AddSingleton<IDataService<EmployeeModel>, SqlDataService<EmployeeModel>>();
+            services.AddSingleton<IDataService<EmployeeModel>, ScvDataService<EmployeeModel, EmployeeModelMap>>();
+            //services.AddSingleton<IDataService<EmployeeModel>, SqlDataService<EmployeeModel>>();
 
         }
 
