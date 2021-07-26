@@ -25,8 +25,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrainingApi.Services", "Tra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrainingApi.Tests", "Trainig_Api\TrainingApi.Test\TrainingApi.Tests.csproj", "{B5434081-D57E-495D-AFB0-1082EE512C0D}"
 EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "TrainingApi.Database", "Trainig_Api\TrainingApi.Database\TrainingApi.Database.sqlproj", "{37322C27-49C5-4D5D-B439-B4033C7AFF1E}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,12 +63,6 @@ Global
 		{B5434081-D57E-495D-AFB0-1082EE512C0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B5434081-D57E-495D-AFB0-1082EE512C0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B5434081-D57E-495D-AFB0-1082EE512C0D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{37322C27-49C5-4D5D-B439-B4033C7AFF1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{37322C27-49C5-4D5D-B439-B4033C7AFF1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{37322C27-49C5-4D5D-B439-B4033C7AFF1E}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{37322C27-49C5-4D5D-B439-B4033C7AFF1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{37322C27-49C5-4D5D-B439-B4033C7AFF1E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{37322C27-49C5-4D5D-B439-B4033C7AFF1E}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,7 +77,6 @@ Global
 		{BD307BF2-E511-4043-B8F9-22585301CC7C} = {A3D3757C-A41E-4DE6-A449-7B1BC3028663}
 		{81B00E59-4AF4-4B2A-86F5-C8A53D38D82F} = {A3D3757C-A41E-4DE6-A449-7B1BC3028663}
 		{B5434081-D57E-495D-AFB0-1082EE512C0D} = {A3D3757C-A41E-4DE6-A449-7B1BC3028663}
-		{37322C27-49C5-4D5D-B439-B4033C7AFF1E} = {A3D3757C-A41E-4DE6-A449-7B1BC3028663}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {24527FAC-F5E9-49D3-A3AF-9AC5B288C38C}
