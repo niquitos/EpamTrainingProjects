@@ -24,7 +24,7 @@ namespace TrainingApi.Controllers
 
         public ActionResult EmployeeIndex()
         {
-            DataService.CreateInstance = CreateInstanceSql;
+            //DataService.CreateInstance = CreateInstanceSql;
             IEnumerable<EmployeeModel> data = DataService.GetData().ToList();
             return View(data);
         }

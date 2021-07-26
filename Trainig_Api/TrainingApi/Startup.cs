@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -22,8 +23,16 @@ namespace TrainingApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
             //services.AddSingleton<IDataService<EmployeeModel>, CsvDataService<EmployeeModel, EmployeeModelMap>>();
-            services.AddSingleton<IDataService<EmployeeModel>, SqlDataService<EmployeeModel>>();
+
+            //services.AddSingleton<IDataService<EmployeeModel>, SqlDataService<EmployeeModel>>();
+
+            //var options = new DbContextOptionsBuilder<EmployeeContext>().UseSqlServer(Configuration["ConnectionStrings:Sql"]).Options;
+            //var dbContext = new EmployeeContext(options);
+            //services.AddSingleton<IDataService<EmployeeModel>>(new EntFrDataService<EmployeeModel,EmployeeContext>(dbContext));
+
+            services.AddSingleton<IDataService<EmployeeModel>, DapperDataService<EmployeeModel>>();
 
         }
 

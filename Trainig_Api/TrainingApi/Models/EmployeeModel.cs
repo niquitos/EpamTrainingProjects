@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace TrainingApi.Models
 {
+    [Keyless]
     public class EmployeeModel
     {
         [Display(Name = "Employee ID")]
@@ -25,21 +26,5 @@ namespace TrainingApi.Models
         [Display(Name = "Email")]
         [Required(ErrorMessage = "You need to give us your email adress.")]
         public string EmailAdress { get; set; }
-
-        [Display(Name = "Confirm email")]
-        [Compare("EmailAdress", ErrorMessage = "The Email and Confirm email must match")]
-        public string ConfirmEmail { get; set; }
-
-        [DataType(DataType.Password)]
-        [StringLength(100, MinimumLength = 4, ErrorMessage = "Your rpassword isn't long enough.")]
-        [Display(Name = "Password")]
-        [Required(ErrorMessage = "You need to give us your password.")]
-        public string Password { get; set; }
-
-        [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The Password and Confirm password must match")]
-        public string ConfirmPassword { get; set; }
-
     }
 }
