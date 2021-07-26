@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Moq;
 using NUnit.Framework;
+using System.Collections.Generic;
+using System.Linq;
 using TrainingApi.Mapping;
 using TrainingApi.Models;
 using TrainingApi.Services;
@@ -20,10 +22,10 @@ namespace TrainingApi.Tests
 
             var dc = new ScvDataService<EmployeeModel, EmployeeModelMap>(configMock.Object);
 
-            var employeeList = dc.GetData();
+            IEnumerable<EmployeeModel> employeeList = dc.GetData();
 
-            Assert.IsNotNull(dc.Data);
-            Assert.AreEqual(employeeList, dc.Data);
+            Assert.IsNotNull(employeeList);
+            Assert.AreEqual(5, employeeList.Count());
         }
     }
 }

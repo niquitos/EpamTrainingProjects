@@ -13,8 +13,6 @@ namespace TrainingApi.Services
 
         public string ConnectionString { get; set; }
 
-        public List<TModel> Data { get; set; } = new List<TModel>();
-
         public Func<DataRow, TModel> CreateInstance { get; set; }
 
         public SqlDataService(IConfiguration configuration)
@@ -29,32 +27,35 @@ namespace TrainingApi.Services
             CreateInstance = action;
         }
 
-        public List<TModel> GetData()
+        public void Save(IEnumerable<TModel> data)
+        {
+
+        }
+
+        public void Save(IEnumerable<TModel> data, CultureInfo culture)
+        {
+
+        }
+
+        public IEnumerable<TModel> GetData()
         {
             return GetData(CultureInfo.InvariantCulture);
         }
 
-        public List<TModel> GetData(CultureInfo culture)
+        public IEnumerable<TModel> GetData(CultureInfo culture)
         {
             using (SqlConnection sq = new(ConnectionString))
             using (SqlDataAdapter adapter = new("SELECT * FROM dbo.Employee", sq))
             {
                 DataTable recipeTable = new();
                 adapter.Fill(recipeTable);
+                var list = new List<TModel>();
                 foreach (DataRow row in recipeTable.Rows)
                 {
-                    if (CreateInstance != null) Data.Add(CreateInstance.Invoke(row));
+                    if (CreateInstance != null) list.Add(CreateInstance.Invoke(row));
                 }
-                return Data;
+                return list;
             }
         }
-
-        public void WriteData(List<TModel> data) => WriteData(data, CultureInfo.InvariantCulture);
-
-        public void WriteData(List<TModel> data, CultureInfo culture)
-        {
-
-        }
-
     }
 }
