@@ -19,12 +19,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
     <PackageReference Include="Prism.Wpf" Version="8.1.97" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Trainig_Api\TrainingApi.Services\TrainingApi.Services.csproj" />
     <ProjectReference Include="..\..\SqlProject.CoreLibrary\SqlProject.CoreLibrary.csproj" />
-    <ProjectReference Include="..\..\SqlProject.Services\SqlProject.Services.csproj" />
   </ItemGroup>
 
 </Project>

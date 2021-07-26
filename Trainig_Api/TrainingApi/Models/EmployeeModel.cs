@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Data;
 
 namespace TrainingApi.Models
 {
@@ -39,5 +40,6 @@ namespace TrainingApi.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The Password and Confirm password must match")]
         public string ConfirmPassword { get; set; }
+
     }
 }

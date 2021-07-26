@@ -5,7 +5,6 @@ using SqlProject.CoreLibrary.Regions;
 using SqlProject.Modules.First.Infrastructure.Repositories;
 using SqlProject.Modules.First.ViewModels;
 using SqlProject.Modules.First.Views;
-using SqlProject.Services.Data;
 
 namespace SqlProject.Modules.First
 {
@@ -27,8 +26,7 @@ namespace SqlProject.Modules.First
             containerRegistry.RegisterForNavigation<FirstTest, FirstTestViewModel>("FirstTestView");
             containerRegistry.RegisterSingleton<IDataTablesRepository, DataTablesRepository>();
 
-            //read from csv
-            containerRegistry.RegisterSingleton<IDataService, CsvDataService>();
+
         }
     }
 }
