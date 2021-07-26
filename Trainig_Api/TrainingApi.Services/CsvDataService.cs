@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace TrainingApi.Services
 {
-    public class ScvDataService<TModel, TMap> : IDataService<TModel> where TMap : ClassMap<TModel>
+    public class CsvDataService<TModel, TMap> : IDataService<TModel> where TMap : ClassMap<TModel>
     {
         private readonly IConfiguration _configuration;
 
@@ -18,7 +18,7 @@ namespace TrainingApi.Services
 
         public Func<DataRow, TModel> CreateInstance { get; set; }
 
-        public ScvDataService(IConfiguration configuration)
+        public CsvDataService(IConfiguration configuration)
         {
             _configuration = configuration;
             ConnectionString = _configuration["ConnectionStrings:Csv"];
