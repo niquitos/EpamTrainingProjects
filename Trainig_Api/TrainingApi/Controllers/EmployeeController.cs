@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using TrainingApi.Models;
 using TrainingApi.Services;
 
@@ -24,7 +25,7 @@ namespace TrainingApi.Controllers
         public ActionResult EmployeeIndex()
         {
             DataService.CreateInstance = CreateInstanceSql;
-            IEnumerable<EmployeeModel> data = DataService.GetData();
+            IEnumerable<EmployeeModel> data = DataService.GetData().ToList();
             return View(data);
         }
 

@@ -40,10 +40,10 @@ namespace SqlTestingProject.ViewModels
         #endregion
 
         #region Commands
-        private DelegateCommand? _moveToNextModule;
+        private DelegateCommand _moveToNextModule;
         public DelegateCommand MoveToNextModule => _moveToNextModule ??= new DelegateCommand(ExecuteMoveToNextModule, CanExecuteMoveToNextModule);
 
-        private DelegateCommand? _moveToPrevModule;
+        private DelegateCommand _moveToPrevModule;
         public DelegateCommand MoveToPrevModule => _moveToPrevModule ??= new DelegateCommand(ExecuteMoveToPrevModule, CanExecuteMoveToPrevModule);
         #endregion
 

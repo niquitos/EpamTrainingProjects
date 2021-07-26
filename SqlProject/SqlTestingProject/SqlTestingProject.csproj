@@ -8,16 +8,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
     <PackageReference Include="Prism.Core" Version="8.1.97" />
     <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Trainig_Api\TrainingApi.Services\TrainingApi.Services.csproj" />
     <ProjectReference Include="..\Modules\SqlProject.Modules.First\SqlProject.Modules.First.csproj" />
     <ProjectReference Include="..\Modules\SqlProject.Modules.Second\SqlProject.Modules.Second.csproj" />
     <ProjectReference Include="..\Modules\SqlProject.Modules.Third\SqlProject.Modules.Third.csproj" />
     <ProjectReference Include="..\SqlProject.CoreLibrary\SqlProject.CoreLibrary.csproj" />
-    <ProjectReference Include="..\SqlProject.Services\SqlProject.Services.csproj" />
   </ItemGroup>
 
 </Project>
