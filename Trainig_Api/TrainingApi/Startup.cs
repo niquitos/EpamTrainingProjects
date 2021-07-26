@@ -23,12 +23,16 @@ namespace TrainingApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
             //services.AddSingleton<IDataService<EmployeeModel>, CsvDataService<EmployeeModel, EmployeeModelMap>>();
+
             //services.AddSingleton<IDataService<EmployeeModel>, SqlDataService<EmployeeModel>>();
-            
-            var options = new DbContextOptionsBuilder<EmployeeContext>().UseSqlServer(Configuration["ConnectionStrings:Sql"]).Options;
-            var dbContext = new EmployeeContext(options);
-            services.AddSingleton<IDataService<EmployeeModel>>(new EntFrDataService<EmployeeModel,EmployeeContext>(dbContext));
+
+            //var options = new DbContextOptionsBuilder<EmployeeContext>().UseSqlServer(Configuration["ConnectionStrings:Sql"]).Options;
+            //var dbContext = new EmployeeContext(options);
+            //services.AddSingleton<IDataService<EmployeeModel>>(new EntFrDataService<EmployeeModel,EmployeeContext>(dbContext));
+
+            services.AddSingleton<IDataService<EmployeeModel>, DapperDataService<EmployeeModel>>();
 
         }
 
