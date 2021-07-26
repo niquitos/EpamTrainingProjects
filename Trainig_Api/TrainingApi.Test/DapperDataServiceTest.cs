@@ -31,7 +31,7 @@ namespace TrainingApi.Tests
         }
 
         [Test]
-        public void Dapper_GetData_Test()
+        public void DapperDataService_GetData_IsNotNullAndCountEqualsFromSetUp()
         {
             Setup_Dapper();
 

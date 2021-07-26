@@ -35,7 +35,7 @@ namespace TrainingApi.Tests
         }
 
         [Test]
-        public void Csv_GetData_Test()
+        public void CsvDataService_GetData_IsNotNullAndCountEqualsFromSetUp()
         {
             Setup_Csv();
 

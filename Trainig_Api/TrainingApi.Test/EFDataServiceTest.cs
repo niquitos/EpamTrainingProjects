@@ -27,7 +27,7 @@ namespace TrainingApi.Tests
         }
 
         [Test]
-        public void EF_GetData_Test()
+        public void EFDataService_GetData_IsNotNullAndCountEqualsFromSetUp()
         {
             Setup_EF();
 

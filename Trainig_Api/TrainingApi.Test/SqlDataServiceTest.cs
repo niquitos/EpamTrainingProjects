@@ -36,7 +36,7 @@ namespace TrainingApi.Tests
         }
 
         [Test]
-        public void Sql_GetData_Test()
+        public void SqlDataService_GetData_IsNotNullAndCountEqualsFromSetUp()
         {
             Setup_Sql();
 
