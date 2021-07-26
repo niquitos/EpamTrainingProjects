@@ -25,6 +25,7 @@ namespace TrainingApi.Services
 
         public void Configure(Func<DataRow, TModel> action)
         {
+            if (action == null) return;
             CreateInstance = action;
         }
 
