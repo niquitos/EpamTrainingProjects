@@ -18,8 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\TrainingApi.Services\TrainingApi.Services.csproj" />
-    <ProjectReference Include="..\..\TrainingApi\TrainingApi.csproj" />
+    <ProjectReference Include="..\TrainingApi.Services\TrainingApi.Services.csproj" />
+    <ProjectReference Include="..\TrainingApi\TrainingApi.csproj" />
   </ItemGroup>
 
 </Project>
