@@ -72,7 +72,7 @@ namespace TrainingApi.Controllers
                     Age = model.Age,
                     EmailAddress = model.EmailAddress
                 };
-                DataRepository.Create(item);
+                DataRepository.CreateImmediately(item);
                 return RedirectToAction(nameof(EmployeeIndex));
             }
             catch(Exception ex)

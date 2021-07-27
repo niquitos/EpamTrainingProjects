@@ -26,25 +26,20 @@ namespace TrainingApi.Services.Repositories
             return _db.Employees.Find(id);
         }
 
-        public void Create(EmployeeDomainModel item)
+        public void CreateImmediately(EmployeeDomainModel item)
         {
             _db.Employees.Add(item);
             Save();
         }
 
-        public void Update(EmployeeDomainModel item)
-        {
-            _db.Entry(item).State = EntityState.Modified;
-        }
-
-        public void Delete(int id)
+        public void DeleteImmediately(int id)
         {
             EmployeeDomainModel item = _db.Employees.Find(id);
             if (item != null) _db.Employees.Remove(item);
             Save();
         }
 
-        public void Save()
+        private void Save()
         {
             _db.SaveChanges();
         }

@@ -7,9 +7,7 @@ namespace TrainingApi.Services.Repositories
     {
         IEnumerable<T> GetAll();
         T Get(int id);
-        void Create(T item);
-        void Update(T item);
-        void Delete(int id);
-        void Save();
+        void CreateImmediately(T item);
+        void DeleteImmediately(int id);
     }
 }
