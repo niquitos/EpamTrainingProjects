@@ -14,7 +14,7 @@ namespace TrainingApi.Tests
         string _connectionString;
         private IDataRepository<EmployeeDomainModel> _dr;
 
-        [SetUp]
+        //[SetUp]
         public void Setup()
         {
             _connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=TrainingApiDB;Integrated Security=True;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
@@ -26,7 +26,7 @@ namespace TrainingApi.Tests
             _dr = new DapperEmployeeRepository(_configMock.Object);
         }
 
-        [Test]
+        //[Test]
         public void EFEmployeeRepository_GetData_IsNotNullAndCountIsMoreThanZero()
         {
             List<EmployeeDomainModel> employeeList = _dr.GetAll().ToList();
@@ -36,7 +36,7 @@ namespace TrainingApi.Tests
             Assert.IsTrue(count > 0);
         }
 
-        [Test]
+        //[Test]
         public void EFEmployeeRepository_Create_NotNullAndCountIncremented()
         {
             List<EmployeeDomainModel> employeeList = _dr.GetAll().ToList();
@@ -57,7 +57,7 @@ namespace TrainingApi.Tests
             Assert.AreEqual(count, employeeList.Count);
         }
 
-        [Test]
+        //[Test]
         public void EFEmployeeRepository_Delete_NotNullAndCountDecremented()
         {
             List<EmployeeDomainModel> employeeList = _dr.GetAll().ToList();
