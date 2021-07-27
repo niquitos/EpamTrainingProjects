@@ -7,11 +7,11 @@ namespace TrainingApi.Mapping
     {
         public EmployeeModelMap()
         {
-            Map(m => m.EmployeeId).Name("Id");
-            Map(m => m.FirstName).Name("Name");
-            Map(m => m.LastName).Name("Surname");
+            Map(m => m.EmployeeId).Name("EmployeeId");
+            Map(m => m.FirstName).Name("FirstName");
+            Map(m => m.LastName).Name("LastName");
             Map(m => m.Age).Name("Age");
-            Map(m => m.EmailAdress).Name("Email");
+            Map(m => m.EmailAddress).Name("EmailAddress");
         }
     }
 }
