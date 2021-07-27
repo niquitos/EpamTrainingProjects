@@ -1,11 +1,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using TrainingApi.Mapping;
-using TrainingApi.Models;
-using TrainingApi.Services;
+using TrainingApi.Services.Context;
+using TrainingApi.Services.DomainModels;
+using TrainingApi.Services.Repositories;
 
 namespace TrainingApi
 {
@@ -22,8 +23,16 @@ namespace TrainingApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            //services.AddSingleton<IDataService<EmployeeModel>, CsvDataService<EmployeeModel, EmployeeModelMap>>();
-            services.AddSingleton<IDataService<EmployeeModel>, SqlDataService<EmployeeModel>>();
+
+            //ef implementation
+            //services.AddDbContext<EmployeeContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:Sql"]));
+            //services.AddScoped<IDataRepository<EmployeeDomainModel>, EFEmployeeRepository>();
+
+            //Dapper implementation
+            //services.AddScoped<IDataRepository<EmployeeDomainModel>, DapperEmployeeRepository>();
+
+            //csv implementation
+            services.AddScoped<IDataRepository<EmployeeDomainModel>, CsvEmployeeRepository>();
 
         }
 
