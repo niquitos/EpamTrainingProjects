@@ -17,7 +17,7 @@ namespace TrainingApi.Services.Repositories
             _connectionString = configuration["ConnectionStrings:Sql"];
         }
 
-        public void Create(EmployeeDomainModel item)
+        public void CreateImmediately(EmployeeDomainModel item)
         {
             string sql = @"INSERT INTO dbo.Employees (EmployeeId, FirstName, LastName, Age, EmailAddress) 
                            VALUES (@EmployeeId, @FirstName, @LastName, @Age, @EmailAddress)";
@@ -25,7 +25,7 @@ namespace TrainingApi.Services.Repositories
             cnn.Execute(sql, item);
         }
 
-        public void Delete(int id)
+        public void DeleteImmediately(int id)
         {
             string sql = @"DELETE dbo.Employees 
                            WHERE Id = @Id";
@@ -48,16 +48,6 @@ namespace TrainingApi.Services.Repositories
                            FROM dbo.Employees";
             using IDbConnection cnn = new SqlConnection(_connectionString);
             return cnn.Query<EmployeeDomainModel>(sql).ToList();
-        }
-
-        public void Save()
-        {
-
-        }
-
-        public void Update(EmployeeDomainModel item)
-        {
-
         }
     }
 }

@@ -17,7 +17,7 @@ namespace TrainingApi.Services.Repositories
             _connectionString = configuration["ConnectionStrings:Csv"];
         }
 
-        public void Create(EmployeeDomainModel item)
+        public void CreateImmediately(EmployeeDomainModel item)
         {
             using StreamWriter sw = new(_connectionString, true);
             using CsvWriter csvWriter = new(sw, CultureInfo.InvariantCulture);
@@ -25,7 +25,7 @@ namespace TrainingApi.Services.Repositories
             csvWriter.WriteRecord(item);
         }
 
-        public void Delete(int id)
+        public void DeleteImmediately(int id)
         {
             var items = GetAll().ToList();
 
@@ -51,16 +51,6 @@ namespace TrainingApi.Services.Repositories
             using StreamReader sr = new(_connectionString);
             using CsvReader scvReader = new(sr, CultureInfo.InvariantCulture);
             return scvReader.GetRecords<EmployeeDomainModel>().ToList();
-        }
-
-        public void Save()
-        {
-
-        }
-
-        public void Update(EmployeeDomainModel item)
-        {
-
         }
     }
 }

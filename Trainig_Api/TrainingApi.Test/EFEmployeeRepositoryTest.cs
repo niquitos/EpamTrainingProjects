@@ -51,7 +51,7 @@ namespace TrainingApi.Tests
                 Age = 100,
                 EmailAddress = "abracadabra@something.com"
             };
-            _dr.Create(item);
+            _dr.CreateImmediately(item);
             employeeList = _dr.GetAll().ToList();
 
             Assert.IsNotNull(employeeList);
@@ -64,7 +64,7 @@ namespace TrainingApi.Tests
             List<EmployeeDomainModel> employeeList = _dr.GetAll().ToList();
             int count = employeeList.Count - 1;
             var lastItem = employeeList.Last();
-            _dr.Delete(lastItem.Id);
+            _dr.DeleteImmediately(lastItem.Id);
             employeeList = _dr.GetAll().ToList();
 
             Assert.IsNotNull(employeeList);
