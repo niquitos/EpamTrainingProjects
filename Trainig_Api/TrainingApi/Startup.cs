@@ -1,13 +1,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using TrainingApi.Mapping;
-using TrainingApi.Models;
-using TrainingApi.Services;
-using TrainingApi.Services.DataAccess;
+using TrainingApi.Services.DomainModels;
+using TrainingApi.Services.Repositories;
 
 namespace TrainingApi
 {
@@ -24,24 +21,15 @@ namespace TrainingApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            //csv 
-            //services.AddSingleton<IDataService<EmployeeModel>, CsvDataService<EmployeeModel, EmployeeModelMap>>();
 
-            //sql-client
-            //services.AddSingleton<IDataService<EmployeeModel>, SqlDataService<EmployeeModel>>();
+            //ef implementation
+            //services.AddSingleton<IDataRepository<EmployeeDomainModel>, EFEmployeeRepository>();
 
-            //entity framework
-            //var options = new DbContextOptionsBuilder<EmployeeContext>().UseSqlServer(Configuration["ConnectionStrings:Sql"]).Options;
-            //var dbContext = new EmployeeContext(options);
-            //services.AddSingleton<IDataService<EmployeeModel>>(new EntFrDataService<EmployeeModel,EmployeeContext>(dbContext));
+            //Dapper implementation
+            //services.AddSingleton<IDataRepository<EmployeeDomainModel>, DapperEmployeeRepository>();
 
-
-            //dapper
-            //services.AddSingleton<IDataService<EmployeeModel>, DapperDataService<EmployeeModel>>();
-
-            //dapper and mapping
-            services.AddSingleton<ISqlDataAccess, SqlDataAccess>();
-            services.AddSingleton<IEmployeeProcessor, EmployeeProcessor>();
+            //csv implementation
+            services.AddSingleton<IDataRepository<EmployeeDomainModel>, CsvEmployeeRepository>();
 
         }
 

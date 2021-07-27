@@ -1,9 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace TrainingApi.Models
 {
-    [Keyless]
     public class EmployeeModel
     {
         [Display(Name = "Employee ID")]
@@ -25,6 +23,6 @@ namespace TrainingApi.Models
         [DataType(DataType.EmailAddress)]
         [Display(Name = "Email")]
         [Required(ErrorMessage = "You need to give us your email adress.")]
-        public string EmailAdress { get; set; }
+        public string EmailAddress { get; set; }
     }
 }

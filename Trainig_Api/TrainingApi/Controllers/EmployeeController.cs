@@ -4,11 +4,10 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using TrainingApi.Mapping;
+using System.Diagnostics;
 using TrainingApi.Models;
-using TrainingApi.Services;
-using TrainingApi.Services.DataAccess;
+using TrainingApi.Services.DomainModels;
+using TrainingApi.Services.Repositories;
 
 namespace TrainingApi.Controllers
 {
@@ -16,34 +15,33 @@ namespace TrainingApi.Controllers
     {
         private readonly ILogger<EmployeeController> _logger;
 
-        //public IDataService<EmployeeModel> DataService { get; }
-        public IEmployeeProcessor EmployeeProcessor { get; }
+        public IDataRepository<EmployeeDomainModel> DataRepository { get; }
 
-        public EmployeeController(ILogger<EmployeeController> logger, /*, IDataService<EmployeeModel> dataService,*/ IEmployeeProcessor employeeProcessor)
+        public EmployeeController(ILogger<EmployeeController> logger,  IDataRepository<EmployeeDomainModel> dataRepository)
         {
             _logger = logger;
+            DataRepository = dataRepository;
             //DataService = dataService;
-            EmployeeProcessor = employeeProcessor;
         }
 
         public ActionResult EmployeeIndex()
-        {
-            //DataService.CreateInstance = CreateInstanceSql;
-            //IEnumerable<EmployeeModel> data = DataService.GetData().ToList();
-            IEnumerable<EmployeeModel> data = EmployeeProcessor.LoadEmployees();
-            return View(data);
-        }
+        { 
+            List<EmployeeModel> data = new();
+            var items = DataRepository.GetAll();
 
-        private EmployeeModel CreateInstanceSql(DataRow row)
-        {
-            return new EmployeeModel
+            //convert from domain model to the view model
+            foreach (var item in items)
             {
-                EmployeeId = Convert.ToInt32(row["EmployeeId"]),
-                FirstName = row["FirstName"].ToString(),
-                LastName = row["LastName"].ToString(),
-                Age = Convert.ToInt32(row["Age"]),
-                EmailAdress = row["EmailAdress"].ToString()
-            };
+                data.Add(new EmployeeModel()
+                {
+                    EmployeeId = item.EmployeeId,
+                    FirstName = item.FirstName,
+                    LastName = item.LastName,
+                    Age = item.Age,
+                    EmailAddress = item.EmailAddress
+                });
+            }
+            return View(data);
         }
 
         // GET: EmployeeController/Details/5
@@ -65,11 +63,21 @@ namespace TrainingApi.Controllers
         {
             try
             {
-                int recordsCreated = EmployeeProcessor.CreateEmployee(model.EmployeeId, model.FirstName, model.LastName, model.Age, model.EmailAdress);
+                //convert from the view model to domain model
+                var item = new EmployeeDomainModel()
+                {
+                    EmployeeId = model.EmployeeId,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Age = model.Age,
+                    EmailAddress = model.EmailAddress
+                };
+                DataRepository.Create(item);
                 return RedirectToAction(nameof(EmployeeIndex));
             }
-            catch
+            catch(Exception ex)
             {
+                string mes = ex.Message;
                 return View();
             }
         }
