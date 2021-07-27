@@ -1,6 +1,5 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Configuration;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -11,7 +10,6 @@ namespace TrainingApi.Services.Repositories
 {
     public class DapperEmployeeRepository : IDataRepository<EmployeeDomainModel>
     {
-        private bool _disposed = false;
         private readonly string _connectionString;
 
         public DapperEmployeeRepository(IConfiguration configuration)
@@ -60,24 +58,6 @@ namespace TrainingApi.Services.Repositories
         public void Update(EmployeeDomainModel item)
         {
 
-        }
-
-        public virtual void Dispose(bool disposing)
-        {
-            if (!_disposed)
-            {
-                if (disposing)
-                {
-
-                }
-            }
-            _disposed = true;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
     }
 }

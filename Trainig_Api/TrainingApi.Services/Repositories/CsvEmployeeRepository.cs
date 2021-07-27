@@ -1,6 +1,5 @@
 ﻿using CsvHelper;
 using Microsoft.Extensions.Configuration;
-using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -11,8 +10,7 @@ namespace TrainingApi.Services.Repositories
 {
     public class CsvEmployeeRepository : IDataRepository<EmployeeDomainModel>
     {
-        private bool _disposed = false;
-        private string _connectionString;
+        private readonly string _connectionString;
 
         public CsvEmployeeRepository(IConfiguration configuration)
         {
@@ -28,7 +26,7 @@ namespace TrainingApi.Services.Repositories
         }
 
         public void Delete(int id)
-        {  
+        {
             var items = GetAll().ToList();
 
             using StreamWriter sw = new(_connectionString, false);
@@ -37,7 +35,7 @@ namespace TrainingApi.Services.Repositories
             if (items.Any())
             {
                 items.Remove(item);
-                csvWriter.WriteRecords(items); 
+                csvWriter.WriteRecords(items);
             }
         }
 
@@ -63,24 +61,6 @@ namespace TrainingApi.Services.Repositories
         public void Update(EmployeeDomainModel item)
         {
 
-        }
-
-        public virtual void Dispose(bool disposing)
-        {
-            if (!_disposed)
-            {
-                if (disposing)
-                {
-
-                }
-            }
-            _disposed = true;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
     }
 }

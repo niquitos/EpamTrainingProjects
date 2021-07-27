@@ -1,7 +1,5 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using TrainingApi.Services.Context;
@@ -11,13 +9,11 @@ namespace TrainingApi.Services.Repositories
 {
     public class EFEmployeeRepository : IDataRepository<EmployeeDomainModel>
     {
-        private EmployeeContext _db;
-        private bool _disposed = false;
+        private readonly EmployeeContext _db;
 
-        public EFEmployeeRepository(IConfiguration configuration)
+        public EFEmployeeRepository(EmployeeContext db)
         {
-            var options = new DbContextOptionsBuilder<EmployeeContext>().UseSqlServer(configuration["ConnectionStrings:Sql"]).Options;
-            _db = new EmployeeContext(options);
+            _db = db;
         }
 
         public IEnumerable<EmployeeDomainModel> GetAll()
@@ -51,24 +47,6 @@ namespace TrainingApi.Services.Repositories
         public void Save()
         {
             _db.SaveChanges();
-        }
-
-        public virtual void Dispose(bool disposing)
-        {
-            if (!_disposed)
-            {
-                if (disposing)
-                {
-                    _db.Dispose();
-                }
-            }
-            _disposed = true;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
     }
 }

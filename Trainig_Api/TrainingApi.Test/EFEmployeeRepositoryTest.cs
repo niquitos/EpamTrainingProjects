@@ -1,8 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Moq;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
+using TrainingApi.Services.Context;
 using TrainingApi.Services.DomainModels;
 using TrainingApi.Services.Repositories;
 
@@ -10,7 +12,6 @@ namespace TrainingApi.Tests
 {
     public class EFEmployeeRepositoryTest
     {
-        private Mock<IConfiguration> _configMock;
         string _connectionString;
         private IDataRepository<EmployeeDomainModel> _dr;
 
@@ -19,11 +20,11 @@ namespace TrainingApi.Tests
         {
             _connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=TrainingApiDB;Integrated Security=True;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
-            _configMock = new Mock<IConfiguration>();
+            var options = new DbContextOptionsBuilder<EmployeeContext>().UseSqlServer(_connectionString).Options;
 
-            _configMock.Setup(r => r["ConnectionStrings:Sql"]).Returns(_connectionString);
+            var context = new EmployeeContext(options);
 
-            _dr = new EFEmployeeRepository(_configMock.Object);
+            _dr = new EFEmployeeRepository(context);
         }
 
         [Test]
