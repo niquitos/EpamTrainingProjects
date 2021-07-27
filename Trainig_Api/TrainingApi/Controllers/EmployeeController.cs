@@ -5,8 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using TrainingApi.Mapping;
 using TrainingApi.Models;
 using TrainingApi.Services;
+using TrainingApi.Services.DataAccess;
 
 namespace TrainingApi.Controllers
 {
@@ -14,18 +16,21 @@ namespace TrainingApi.Controllers
     {
         private readonly ILogger<EmployeeController> _logger;
 
-        public IDataService<EmployeeModel> DataService { get; }
+        //public IDataService<EmployeeModel> DataService { get; }
+        public IEmployeeProcessor EmployeeProcessor { get; }
 
-        public EmployeeController(ILogger<EmployeeController> logger, IDataService<EmployeeModel> dataService)
+        public EmployeeController(ILogger<EmployeeController> logger, /*, IDataService<EmployeeModel> dataService,*/ IEmployeeProcessor employeeProcessor)
         {
             _logger = logger;
-            DataService = dataService;
+            //DataService = dataService;
+            EmployeeProcessor = employeeProcessor;
         }
 
         public ActionResult EmployeeIndex()
         {
             //DataService.CreateInstance = CreateInstanceSql;
-            IEnumerable<EmployeeModel> data = DataService.GetData().ToList();
+            //IEnumerable<EmployeeModel> data = DataService.GetData().ToList();
+            IEnumerable<EmployeeModel> data = EmployeeProcessor.LoadEmployees();
             return View(data);
         }
 
@@ -56,11 +61,12 @@ namespace TrainingApi.Controllers
         // POST: EmployeeController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(EmployeeModel model)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                int recordsCreated = EmployeeProcessor.CreateEmployee(model.EmployeeId, model.FirstName, model.LastName, model.Age, model.EmailAdress);
+                return RedirectToAction(nameof(EmployeeIndex));
             }
             catch
             {

@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using TrainingApi.Mapping;
 using TrainingApi.Models;
 using TrainingApi.Services;
+using TrainingApi.Services.DataAccess;
 
 namespace TrainingApi
 {
@@ -23,16 +24,24 @@ namespace TrainingApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-
+            //csv 
             //services.AddSingleton<IDataService<EmployeeModel>, CsvDataService<EmployeeModel, EmployeeModelMap>>();
 
+            //sql-client
             //services.AddSingleton<IDataService<EmployeeModel>, SqlDataService<EmployeeModel>>();
 
+            //entity framework
             //var options = new DbContextOptionsBuilder<EmployeeContext>().UseSqlServer(Configuration["ConnectionStrings:Sql"]).Options;
             //var dbContext = new EmployeeContext(options);
             //services.AddSingleton<IDataService<EmployeeModel>>(new EntFrDataService<EmployeeModel,EmployeeContext>(dbContext));
 
-            services.AddSingleton<IDataService<EmployeeModel>, DapperDataService<EmployeeModel>>();
+
+            //dapper
+            //services.AddSingleton<IDataService<EmployeeModel>, DapperDataService<EmployeeModel>>();
+
+            //dapper and mapping
+            services.AddSingleton<ISqlDataAccess, SqlDataAccess>();
+            services.AddSingleton<IEmployeeProcessor, EmployeeProcessor>();
 
         }
 
