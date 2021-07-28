@@ -13,21 +13,20 @@ namespace TrainingApi.Controllers
     public class EmployeeController : Controller
     {
         private readonly ILogger<EmployeeController> _logger;
+        private readonly IMapper _mapper;
+        private readonly IDataRepository<EmployeeDomainModel> _dataRepository;
 
-        public IDataRepository<EmployeeDomainModel> DataRepository { get; }
-
-        public EmployeeController(ILogger<EmployeeController> logger, IDataRepository<EmployeeDomainModel> dataRepository)
+        public EmployeeController(ILogger<EmployeeController> logger,
+                                  IDataRepository<EmployeeDomainModel> dataRepository, IMapper mapper)
         {
             _logger = logger;
-            DataRepository = dataRepository;
-            //DataService = dataService;
+            _dataRepository = dataRepository;
+            _mapper = mapper;
         }
 
         public ActionResult EmployeeIndex()
         {
-            var config = new MapperConfiguration(cfg => cfg.CreateMap<EmployeeDomainModel, EmployeeModel>());
-            var mapper = new Mapper(config);
-            var employees = mapper.Map<List<EmployeeModel>>(DataRepository.GetAll());
+            List<EmployeeModel> employees = _mapper.Map<List<EmployeeModel>>(_dataRepository.GetAll());
 
             return View(employees);
         }
@@ -50,12 +49,10 @@ namespace TrainingApi.Controllers
         public ActionResult Create(EmployeeModel model)
         {
             if (ModelState.IsValid)
-            {
-                var config = new MapperConfiguration(cfg => cfg.CreateMap<EmployeeModel, EmployeeDomainModel>());
-                var mapper = new Mapper(config);
-                EmployeeDomainModel employee = mapper.Map<EmployeeModel, EmployeeDomainModel>(model);
+            {  
+                EmployeeDomainModel employee = _mapper.Map<EmployeeModel, EmployeeDomainModel>(model);
 
-                DataRepository.CreateImmediately(employee);
+                _dataRepository.CreateImmediately(employee);
 
                 return RedirectToAction(nameof(EmployeeIndex));
             }
