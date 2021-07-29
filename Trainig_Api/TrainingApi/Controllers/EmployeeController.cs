@@ -10,6 +10,7 @@ using TrainingApi.Services.Repositories;
 
 namespace TrainingApi.Controllers
 {
+    [ApiController]
     public class EmployeeController : Controller
     {
         private readonly ILogger<EmployeeController> _logger;
@@ -24,6 +25,7 @@ namespace TrainingApi.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet("Employee/Index")]
         public ActionResult Index()
         {
             List<EmployeeModel> employees = _mapper.Map<List<EmployeeModel>>(_employeeRepository.GetAll());
@@ -32,20 +34,22 @@ namespace TrainingApi.Controllers
         }
 
         // GET: EmployeeController/Details/5
+        [HttpGet("Employee/Details")]
         public ActionResult Details(int id)
         {
             return View();
         }
 
         // GET: EmployeeController/Create
+        [HttpGet("Employee/Create")]
         public ActionResult Create()
         {
             return View();
         }
 
         // POST: EmployeeController/Create
-        [HttpPost]
         [ValidateAntiForgeryToken]
+        [HttpPost("Employee/Create")]
         public ActionResult Create(EmployeeModel model)
         {
             if (ModelState.IsValid)
@@ -60,14 +64,15 @@ namespace TrainingApi.Controllers
         }
 
         // GET: EmployeeController/Edit/5
+        [HttpGet("Employee/Edit")]
         public ActionResult Edit(int id)
         {
             return View();
         }
 
         // POST: EmployeeController/Edit/5
-        [HttpPost]
         [ValidateAntiForgeryToken]
+        [HttpPost("Employee/Edit")]
         public ActionResult Edit(int id, IFormCollection collection)
         {
             try
@@ -81,14 +86,15 @@ namespace TrainingApi.Controllers
         }
 
         // GET: EmployeeController/Delete/5
+        [HttpGet("Employee/Delete")]
         public ActionResult Delete(int id)
         {
             return View();
         }
 
         // POST: EmployeeController/Delete/5
-        [HttpPost]
         [ValidateAntiForgeryToken]
+        [HttpPost("Employee/Delete")]
         public ActionResult Delete(int id, IFormCollection collection)
         {
             try
