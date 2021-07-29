@@ -14,19 +14,19 @@ namespace TrainingApi.Controllers
     {
         private readonly ILogger<EmployeeController> _logger;
         private readonly IMapper _mapper;
-        private readonly IDataRepository<EmployeeDomainModel> _dataRepository;
+        private readonly IDataRepository<EmployeeDomainModel> _employeeRepository;
 
         public EmployeeController(ILogger<EmployeeController> logger,
-                                  IDataRepository<EmployeeDomainModel> dataRepository, IMapper mapper)
+                                  IDataRepository<EmployeeDomainModel> employeeRepository, IMapper mapper)
         {
             _logger = logger;
-            _dataRepository = dataRepository;
+            _employeeRepository = employeeRepository;
             _mapper = mapper;
         }
 
-        public ActionResult EmployeeIndex()
+        public ActionResult Index()
         {
-            List<EmployeeModel> employees = _mapper.Map<List<EmployeeModel>>(_dataRepository.GetAll());
+            List<EmployeeModel> employees = _mapper.Map<List<EmployeeModel>>(_employeeRepository.GetAll());
 
             return View(employees);
         }
@@ -52,9 +52,9 @@ namespace TrainingApi.Controllers
             {  
                 EmployeeDomainModel employee = _mapper.Map<EmployeeModel, EmployeeDomainModel>(model);
 
-                _dataRepository.CreateImmediately(employee);
+                _employeeRepository.CreateImmediately(employee);
 
-                return RedirectToAction(nameof(EmployeeIndex));
+                return RedirectToAction(nameof(Index));
             }
             return View();
         }
