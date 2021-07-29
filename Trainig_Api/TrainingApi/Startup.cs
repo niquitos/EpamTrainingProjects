@@ -62,7 +62,7 @@ namespace TrainingApi
             app.UseStaticFiles();
 
             
-            app.UseSwagger();
+            app.UseSwagger(c=> { c.SerializeAsV2 = true; });
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
