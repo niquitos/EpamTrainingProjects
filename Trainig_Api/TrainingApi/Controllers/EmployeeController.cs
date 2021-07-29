@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics;
 using TrainingApi.Models;
 using TrainingApi.Services.DomainModels;
 using TrainingApi.Services.Repositories;
@@ -14,34 +13,22 @@ namespace TrainingApi.Controllers
     public class EmployeeController : Controller
     {
         private readonly ILogger<EmployeeController> _logger;
+        private readonly IMapper _mapper;
+        private readonly IDataRepository<EmployeeDomainModel> _employeeRepository;
 
-        public IDataRepository<EmployeeDomainModel> DataRepository { get; }
-
-        public EmployeeController(ILogger<EmployeeController> logger,  IDataRepository<EmployeeDomainModel> dataRepository)
+        public EmployeeController(ILogger<EmployeeController> logger,
+                                  IDataRepository<EmployeeDomainModel> employeeRepository, IMapper mapper)
         {
             _logger = logger;
-            DataRepository = dataRepository;
-            //DataService = dataService;
+            _employeeRepository = employeeRepository;
+            _mapper = mapper;
         }
 
-        public ActionResult EmployeeIndex()
-        { 
-            List<EmployeeModel> data = new();
-            var items = DataRepository.GetAll();
+        public ActionResult Index()
+        {
+            List<EmployeeModel> employees = _mapper.Map<List<EmployeeModel>>(_employeeRepository.GetAll());
 
-            //convert from domain model to the view model
-            foreach (var item in items)
-            {
-                data.Add(new EmployeeModel()
-                {
-                    EmployeeId = item.EmployeeId,
-                    FirstName = item.FirstName,
-                    LastName = item.LastName,
-                    Age = item.Age,
-                    EmailAddress = item.EmailAddress
-                });
-            }
-            return View(data);
+            return View(employees);
         }
 
         // GET: EmployeeController/Details/5
@@ -61,25 +48,15 @@ namespace TrainingApi.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(EmployeeModel model)
         {
-            try
-            {
-                //convert from the view model to domain model
-                var item = new EmployeeDomainModel()
-                {
-                    EmployeeId = model.EmployeeId,
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    Age = model.Age,
-                    EmailAddress = model.EmailAddress
-                };
-                DataRepository.CreateImmediately(item);
-                return RedirectToAction(nameof(EmployeeIndex));
+            if (ModelState.IsValid)
+            {  
+                EmployeeDomainModel employee = _mapper.Map<EmployeeModel, EmployeeDomainModel>(model);
+
+                _employeeRepository.CreateImmediately(employee);
+
+                return RedirectToAction(nameof(Index));
             }
-            catch(Exception ex)
-            {
-                string mes = ex.Message;
-                return View();
-            }
+            return View();
         }
 
         // GET: EmployeeController/Edit/5
