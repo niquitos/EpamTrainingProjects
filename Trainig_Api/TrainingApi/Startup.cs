@@ -9,6 +9,10 @@ using TrainingApi.Mapping;
 using TrainingApi.Services.Context;
 using TrainingApi.Services.DomainModels;
 using TrainingApi.Services.Repositories;
+using System;
+using System.Reflection;
+using System.IO;
+using Microsoft.OpenApi.Models;
 
 namespace TrainingApi
 {
@@ -42,7 +46,22 @@ namespace TrainingApi
             //csv implementation
             services.AddScoped<IDataRepository<EmployeeDomainModel>, CsvEmployeeRepository>();
 
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(c=> 
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo 
+                { 
+                    Version ="v1",
+                    Title = "Training API",
+                    Description = "A simple example ASP.NET Core Web API",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Alexander Nikitin"
+                    },
+                });
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,7 +84,7 @@ namespace TrainingApi
             app.UseSwagger(c=> { c.SerializeAsV2 = true; });
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Training API V1");
             });
 
             app.UseRouting();
