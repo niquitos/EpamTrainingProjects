@@ -10,6 +10,7 @@ using TrainingApi.Services.Repositories;
 
 namespace TrainingApi.Controllers
 {
+    [ApiController]
     public class EmployeeController : Controller
     {
         private readonly ILogger<EmployeeController> _logger;
@@ -24,6 +25,11 @@ namespace TrainingApi.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Loads employees from the database and passes them to the view
+        /// </summary>
+        /// <returns>A view that displays a table with all employees</returns>
+        [HttpGet("Employee/Index")]
         public ActionResult Index()
         {
             List<EmployeeModel> employees = _mapper.Map<List<EmployeeModel>>(_employeeRepository.GetAll());
@@ -31,21 +37,34 @@ namespace TrainingApi.Controllers
             return View(employees);
         }
 
-        // GET: EmployeeController/Details/5
+        /// <summary>
+        /// Does nothing for now
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("Employee/Details")]
         public ActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: EmployeeController/Create
+        /// <summary>
+        /// Loads a form to create an employee
+        /// </summary>
+        /// <returns>A view with the form fields and a submit button</returns>
+        [HttpGet("Employee/Create")]
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: EmployeeController/Create
-        [HttpPost]
+        /// <summary>
+        /// Saves an employee to the database
+        /// </summary>
+        /// <param name="model">An employee model created in the form</param>
+        /// <returns>If the model is valid redirects to the view with employee table. If not then loads a form to create an employee.</returns>
         [ValidateAntiForgeryToken]
+        [HttpPost("Employee/Create")]
         public ActionResult Create(EmployeeModel model)
         {
             if (ModelState.IsValid)
@@ -59,15 +78,25 @@ namespace TrainingApi.Controllers
             return View();
         }
 
-        // GET: EmployeeController/Edit/5
+        /// <summary>
+        /// Does nothing for now
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("Employee/Edit")]
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: EmployeeController/Edit/5
-        [HttpPost]
+        /// <summary>
+        /// Does nothing for now
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="collection"></param>
+        /// <returns></returns>
         [ValidateAntiForgeryToken]
+        [HttpPost("Employee/Edit")]
         public ActionResult Edit(int id, IFormCollection collection)
         {
             try
@@ -80,15 +109,25 @@ namespace TrainingApi.Controllers
             }
         }
 
-        // GET: EmployeeController/Delete/5
+       /// <summary>
+       /// Does nothing for now
+       /// </summary>
+       /// <param name="id"></param>
+       /// <returns></returns>
+        [HttpGet("Employee/Delete")]
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: EmployeeController/Delete/5
-        [HttpPost]
+        /// <summary>
+        /// Does nothing for now
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="collection"></param>
+        /// <returns></returns>
         [ValidateAntiForgeryToken]
+        [HttpPost("Employee/Delete")]
         public ActionResult Delete(int id, IFormCollection collection)
         {
             try
