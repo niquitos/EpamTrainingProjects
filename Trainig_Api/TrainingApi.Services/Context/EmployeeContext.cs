@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using TrainingApi.Services.DomainModels;
 
 namespace TrainingApi.Services.Context

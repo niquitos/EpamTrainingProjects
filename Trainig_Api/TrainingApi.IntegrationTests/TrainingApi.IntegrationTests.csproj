@@ -32,8 +32,4 @@
     <ProjectReference Include="..\TrainingApi\TrainingApi.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Helpers\" />
-  </ItemGroup>
-
 </Project>
