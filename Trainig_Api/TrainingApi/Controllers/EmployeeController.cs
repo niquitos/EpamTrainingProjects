@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using TrainingApi.Models;
 using TrainingApi.Services.DomainModels;
@@ -10,6 +9,7 @@ using TrainingApi.Services.Repositories;
 
 namespace TrainingApi.Controllers
 {
+    [Route("[controller]")]
     [ApiController]
     public class EmployeeController : Controller
     {
@@ -29,7 +29,7 @@ namespace TrainingApi.Controllers
         /// Loads employees from the database and passes them to the view
         /// </summary>
         /// <returns>A view that displays a table with all employees</returns>
-        [HttpGet("Employee/Index")]
+        [HttpGet]
         public ActionResult Index()
         {
             List<EmployeeModel> employees = _mapper.Map<List<EmployeeModel>>(_employeeRepository.GetAll());
@@ -42,7 +42,7 @@ namespace TrainingApi.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("Employee/Details")]
+        [HttpGet("Details")]
         public ActionResult Details(int id)
         {
             return View();
@@ -52,7 +52,7 @@ namespace TrainingApi.Controllers
         /// Loads a form to create an employee
         /// </summary>
         /// <returns>A view with the form fields and a submit button</returns>
-        [HttpGet("Employee/Create")]
+        [HttpGet("Create")]
         public ActionResult Create()
         {
             return View();
@@ -64,11 +64,12 @@ namespace TrainingApi.Controllers
         /// <param name="model">An employee model created in the form</param>
         /// <returns>If the model is valid redirects to the view with employee table. If not then loads a form to create an employee.</returns>
         [ValidateAntiForgeryToken]
-        [HttpPost("Employee/Create")]
-        public ActionResult Create(EmployeeModel model)
+        [HttpPost("Create")]
+        public ActionResult Create([FromForm]EmployeeModel model)
         {
+            if (!ModelState.IsValid) return ValidationProblem();
             if (ModelState.IsValid)
-            {  
+            {
                 EmployeeDomainModel employee = _mapper.Map<EmployeeModel, EmployeeDomainModel>(model);
 
                 _employeeRepository.CreateImmediately(employee);
@@ -83,7 +84,7 @@ namespace TrainingApi.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("Employee/Edit")]
+        [HttpGet("Edit")]
         public ActionResult Edit(int id)
         {
             return View();
@@ -96,7 +97,7 @@ namespace TrainingApi.Controllers
         /// <param name="collection"></param>
         /// <returns></returns>
         [ValidateAntiForgeryToken]
-        [HttpPost("Employee/Edit")]
+        [HttpPost("Edit")]
         public ActionResult Edit(int id, IFormCollection collection)
         {
             try
@@ -109,12 +110,12 @@ namespace TrainingApi.Controllers
             }
         }
 
-       /// <summary>
-       /// Does nothing for now
-       /// </summary>
-       /// <param name="id"></param>
-       /// <returns></returns>
-        [HttpGet("Employee/Delete")]
+        /// <summary>
+        /// Does nothing for now
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("Delete")]
         public ActionResult Delete(int id)
         {
             return View();
@@ -127,7 +128,7 @@ namespace TrainingApi.Controllers
         /// <param name="collection"></param>
         /// <returns></returns>
         [ValidateAntiForgeryToken]
-        [HttpPost("Employee/Delete")]
+        [HttpDelete("Delete")]
         public ActionResult Delete(int id, IFormCollection collection)
         {
             try

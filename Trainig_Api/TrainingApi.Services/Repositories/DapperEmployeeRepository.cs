@@ -8,20 +8,18 @@ using TrainingApi.Services.DomainModels;
 
 namespace TrainingApi.Services.Repositories
 {
-    public class DapperEmployeeRepository : IDataRepository<EmployeeDomainModel>
+    public class DapperEmployeeRepository : ConnectionBase, IDataRepository<EmployeeDomainModel>
     {
-        private readonly string _connectionString;
 
-        public DapperEmployeeRepository(IConfiguration configuration)
+        public DapperEmployeeRepository(IConfiguration configuration):base(configuration["ConnectionStrings:Sql"])
         {
-            _connectionString = configuration["ConnectionStrings:Sql"];
         }
 
         public void CreateImmediately(EmployeeDomainModel item)
         {
             string sql = @"INSERT INTO dbo.Employees (EmployeeId, FirstName, LastName, Age, EmailAddress) 
                            VALUES (@EmployeeId, @FirstName, @LastName, @Age, @EmailAddress)";
-            using IDbConnection cnn = new SqlConnection(_connectionString);
+            using IDbConnection cnn = new SqlConnection(DataConnection);
             cnn.Execute(sql, item);
         }
 
@@ -29,7 +27,7 @@ namespace TrainingApi.Services.Repositories
         {
             string sql = @"DELETE dbo.Employees 
                            WHERE Id = @Id";
-            using IDbConnection cnn = new SqlConnection(_connectionString);
+            using IDbConnection cnn = new SqlConnection(DataConnection);
             cnn.Execute(sql, new { Id = id });
         }
 
@@ -38,7 +36,7 @@ namespace TrainingApi.Services.Repositories
             string sql = @"SELECT *
                            FROM dbo.Employees
                            WHERE Id = @Id";
-            using IDbConnection cnn = new SqlConnection(_connectionString);
+            using IDbConnection cnn = new SqlConnection(DataConnection);
             return cnn.QuerySingle<EmployeeDomainModel>(sql, new { Id = id });
         }
 
@@ -46,7 +44,7 @@ namespace TrainingApi.Services.Repositories
         {
             string sql = @"SELECT * 
                            FROM dbo.Employees";
-            using IDbConnection cnn = new SqlConnection(_connectionString);
+            using IDbConnection cnn = new SqlConnection(DataConnection);
             return cnn.Query<EmployeeDomainModel>(sql).ToList();
         }
     }

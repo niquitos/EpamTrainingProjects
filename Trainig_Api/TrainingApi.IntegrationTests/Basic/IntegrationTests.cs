@@ -6,8 +6,6 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using System;
-using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using TrainingApi.IntegrationTests.Helpers;
 using TrainingApi.Services.Context;
@@ -23,7 +21,7 @@ namespace TrainingApi.IntegrationTests.Basic
         public IntegrationTests()
         {
             _factory = new WebApplicationFactory<Startup>();
-                
+
         }
 
         [TestCase("/")]
@@ -51,7 +49,7 @@ namespace TrainingApi.IntegrationTests.Basic
             var client = new WebApplicationFactory<Startup>().WithWebHostBuilder(builder =>
             {
                 builder.ConfigureServices(services =>
-                { 
+                {
                     services.RemoveAll(typeof(EmployeeContext));
                     services.RemoveAll(typeof(IDataRepository<EmployeeDomainModel>));
                     services.AddDbContext<EmployeeContext>(options =>
@@ -86,7 +84,7 @@ namespace TrainingApi.IntegrationTests.Basic
             var tableEntries = content.QuerySelector("tbody").ChildElementCount;
             var message = content.QuerySelector("tbody").TextContent;
             // Assert
-            Assert.IsTrue(tableEntries>2);
+            Assert.IsTrue(tableEntries > 2);
         }
     }
 }
