@@ -29,7 +29,7 @@ namespace TrainingApi.Controllers
         /// Loads employees from the database and passes them to the view
         /// </summary>
         /// <returns>A view that displays a table with all employees</returns>
-        [HttpGet]
+        [HttpGet("Index")]
         public ActionResult Index()
         {
             List<EmployeeModel> employees = _mapper.Map<List<EmployeeModel>>(_employeeRepository.GetAll());
