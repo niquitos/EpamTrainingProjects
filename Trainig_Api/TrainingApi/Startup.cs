@@ -13,6 +13,7 @@ using System;
 using System.Reflection;
 using System.IO;
 using Microsoft.OpenApi.Models;
+using TrainingApi.Services.Messages;
 
 namespace TrainingApi
 {
@@ -62,6 +63,10 @@ namespace TrainingApi
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
+
+            services.AddOptions();
+            services.Configure<RabbitMqConfiguration>(Configuration.GetSection("RabbitMq"));
+            services.AddTransient<IEmployeeUpdateSender, EmployeeUpdateSender>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

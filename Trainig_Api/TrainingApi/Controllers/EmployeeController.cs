@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using TrainingApi.Models;
 using TrainingApi.Services.DomainModels;
+using TrainingApi.Services.Messages;
 using TrainingApi.Services.Repositories;
 
 namespace TrainingApi.Controllers
@@ -14,13 +15,15 @@ namespace TrainingApi.Controllers
     public class EmployeeController : Controller
     {
         private readonly ILogger<EmployeeController> _logger;
+        private readonly IEmployeeUpdateSender _employeeUpdateSender;
         private readonly IMapper _mapper;
         private readonly IDataRepository<EmployeeDomainModel> _employeeRepository;
 
-        public EmployeeController(ILogger<EmployeeController> logger,
+        public EmployeeController(ILogger<EmployeeController> logger, IEmployeeUpdateSender employeeUpdateSender,
                                   IDataRepository<EmployeeDomainModel> employeeRepository, IMapper mapper)
         {
             _logger = logger;
+            _employeeUpdateSender = employeeUpdateSender;
             _employeeRepository = employeeRepository;
             _mapper = mapper;
         }
@@ -59,13 +62,13 @@ namespace TrainingApi.Controllers
         }
 
         /// <summary>
-        /// Saves an employee to the database
+        /// Saves an employee to the database and sends a message to RabbitMq
         /// </summary>
         /// <param name="model">An employee model created in the form</param>
         /// <returns>If the model is valid redirects to the view with employee table. If not then loads a form to create an employee.</returns>
         [ValidateAntiForgeryToken]
         [HttpPost("Create")]
-        public ActionResult Create([FromForm]EmployeeModel model)
+        public ActionResult Create([FromForm] EmployeeModel model)
         {
             if (!ModelState.IsValid) return ValidationProblem();
             if (ModelState.IsValid)
@@ -73,6 +76,8 @@ namespace TrainingApi.Controllers
                 EmployeeDomainModel employee = _mapper.Map<EmployeeModel, EmployeeDomainModel>(model);
 
                 _employeeRepository.CreateImmediately(employee);
+
+                _employeeUpdateSender.SendEmployee(employee);
 
                 return RedirectToAction(nameof(Index));
             }
