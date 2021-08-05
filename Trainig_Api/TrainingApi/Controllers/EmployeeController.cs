@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
+using System.Threading;
 using TrainingApi.Models;
 using TrainingApi.Services.DomainModels;
 using TrainingApi.Services.Messages;
@@ -16,16 +18,21 @@ namespace TrainingApi.Controllers
     {
         private readonly ILogger<EmployeeController> _logger;
         private readonly IEmployeeUpdateSender _employeeUpdateSender;
+        private readonly IHostedService _employeeConsumerService;
         private readonly IMapper _mapper;
         private readonly IDataRepository<EmployeeDomainModel> _employeeRepository;
 
         public EmployeeController(ILogger<EmployeeController> logger, IEmployeeUpdateSender employeeUpdateSender,
+                                  IHostedService employeeConsumerService,
                                   IDataRepository<EmployeeDomainModel> employeeRepository, IMapper mapper)
         {
             _logger = logger;
             _employeeUpdateSender = employeeUpdateSender;
+            _employeeConsumerService = employeeConsumerService;
             _employeeRepository = employeeRepository;
             _mapper = mapper;
+            CancellationTokenSource source = new CancellationTokenSource();
+            _employeeConsumerService.StartAsync(source.Token);
         }
 
         /// <summary>
@@ -33,10 +40,10 @@ namespace TrainingApi.Controllers
         /// </summary>
         /// <returns>A view that displays a table with all employees</returns>
         [HttpGet("Index")]
-        public ActionResult Index()
+        public  ActionResult Index()
         {
             List<EmployeeModel> employees = _mapper.Map<List<EmployeeModel>>(_employeeRepository.GetAll());
-
+            
             return View(employees);
         }
 
