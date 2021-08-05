@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using TrainingApi.Services.Messages;
 
 namespace TrainingApi
 {
@@ -19,13 +17,6 @@ namespace TrainingApi
                         .ConfigureWebHostDefaults(webBuilder =>
                         {
                             webBuilder.UseStartup<Startup>();
-                        })
-                        .UseWindowsService()
-                        .ConfigureServices((hostContext, services) =>
-                        {
-                            var config = hostContext.Configuration;
-                            services.Configure<RabbitMqConfiguration>(config.GetSection("RabbitMq"));
-                            services.AddHostedService<EmployeeConsumerService>();
                         });
         }
     }

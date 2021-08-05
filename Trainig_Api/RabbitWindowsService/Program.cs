@@ -1,5 +1,5 @@
-﻿using System;
-using Topshelf;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace RabbitWindowsService
 {
@@ -7,24 +7,19 @@ namespace RabbitWindowsService
     {
         static void Main(string[] args)
         {
-            var exitCode = HostFactory.Run(x =>
-            {
-                x.Service<RabbitConsumer>(s =>
-                {
-                    s.ConstructUsing(consumer => new RabbitConsumer("amqp://guest:guest@localhost:5672","EmployeeQueue"));
-                    s.WhenStarted(consumer => consumer.Start());
-                    s.WhenStopped(consumer => consumer.Stop());
-                });
-
-                x.RunAsLocalSystem();
-
-                x.SetServiceName("RabbitConsumerService");
-                x.SetDisplayName("Rabbit Consumer Service");
-                x.SetDescription(@"Windows service that listens to RabbitMq messages");
-            });
-
-            int exitCodeValue = (int)Convert.ChangeType(exitCode, exitCode.GetTypeCode());
-            Environment.ExitCode = exitCodeValue;
+            CreateHostBuilder(args).Build().Run();
+        }
+        public static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            return Host.CreateDefaultBuilder(args)
+                        .UseWindowsService()
+                        .ConfigureServices((hostContext, services) =>
+                        {
+                            var config = hostContext.Configuration;
+                            services.AddOptions();
+                            services.Configure<RabbitMqConfiguration>(config.GetSection("RabbitMq"));
+                            services.AddHostedService<EmployeeConsumerService>();
+                        });
         }
     }
 }

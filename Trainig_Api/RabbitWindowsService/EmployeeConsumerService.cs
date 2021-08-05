@@ -3,14 +3,14 @@ using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
-using System.ComponentModel;
+using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace TrainingApi.Services.Messages
+namespace RabbitWindowsService
 {
-    public class EmployeeConsumerService : BackgroundWorker, IEmployeeConsumerService, IHostedService
+    public class EmployeeConsumerService : BackgroundService, IEmployeeConsumerService
     {
         private readonly string _uri;
         private readonly string _queueName;
@@ -34,6 +34,7 @@ namespace TrainingApi.Services.Messages
             string message = Encoding.UTF8.GetString(body);
             string[] lines = new string[] { message };
             Console.WriteLine(message);
+            File.AppendAllLines("EmployeeTxt.txt", lines);
         }
 
         public void Start()
@@ -109,14 +110,19 @@ namespace TrainingApi.Services.Messages
             return _connection != null;
         }
 
-        public Task StartAsync(CancellationToken cancellationToken)
+        public override Task StartAsync(CancellationToken cancellationToken)
         {
             return Task.Run(() => Start(), cancellationToken);
         }
 
-        public Task StopAsync(CancellationToken cancellationToken)
+        public override Task StopAsync(CancellationToken cancellationToken)
         {
             return Task.Run(() => Stop(), cancellationToken);
+        }
+
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            return StartAsync(stoppingToken);
         }
     }
 }
