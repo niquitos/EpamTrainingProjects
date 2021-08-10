@@ -93,8 +93,6 @@ namespace TrainingApi
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Training API V1");
             });
 
-            app.UseSerilogRequestLogging();
-
             app.UseRouting();
 
             app.UseAuthorization();
