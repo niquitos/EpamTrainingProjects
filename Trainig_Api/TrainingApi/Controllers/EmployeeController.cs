@@ -42,6 +42,7 @@ namespace TrainingApi.Controllers
         [HttpGet("Index")]
         public  ActionResult Index()
         {
+            _logger.LogInformation("Employee Index page loaded");
             List<EmployeeModel> employees = _mapper.Map<List<EmployeeModel>>(_employeeRepository.GetAll());
             
             return View(employees);

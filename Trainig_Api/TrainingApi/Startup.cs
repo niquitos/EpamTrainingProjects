@@ -14,6 +14,7 @@ using System.Reflection;
 using System.IO;
 using Microsoft.OpenApi.Models;
 using TrainingApi.Services.Messages;
+using Serilog;
 
 namespace TrainingApi
 {
@@ -91,6 +92,8 @@ namespace TrainingApi
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Training API V1");
             });
+
+            app.UseSerilogRequestLogging();
 
             app.UseRouting();
 

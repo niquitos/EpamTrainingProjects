@@ -1,0 +1,4 @@
+﻿08/10/2021 11:31:02 Application starting up
+08/10/2021 11:31:05 HTTP "GET" "/" responded 200 in 354.6309 ms
+08/10/2021 11:31:16 Employee Index page loaded
+08/10/2021 11:31:16 HTTP "GET" "/Employee/Index" responded 200 in 4710.1399 ms
