@@ -18,11 +18,13 @@ namespace TrainingApi.Controllers
         [HttpGet("")]
         public IActionResult Index()
         {
+            _logger.LogInformation("This is a home page");
             return View();
         }
         [HttpGet("Home/Privacy")]
         public IActionResult Privacy()
         {
+            _logger.LogInformation("This is a privacy page");
             return View();
         }
 

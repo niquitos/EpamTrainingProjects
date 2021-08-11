@@ -66,6 +66,7 @@ namespace TrainingApi.Controllers
         [HttpGet("Create")]
         public ActionResult Create()
         {
+            _logger.LogInformation("Here you can create an employee");
             return View();
         }
 
