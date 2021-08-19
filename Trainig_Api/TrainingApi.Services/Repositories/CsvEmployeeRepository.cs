@@ -1,5 +1,7 @@
 ﻿using CsvHelper;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -10,8 +12,11 @@ namespace TrainingApi.Services.Repositories
 {
     public class CsvEmployeeRepository : ConnectionBase, IDataRepository<EmployeeDomainModel>
     {
-        public CsvEmployeeRepository(IConfiguration configuration) : base(configuration["ConnectionStrings:Csv"])
+        private readonly IMemoryCache _memoryCache;
+
+        public CsvEmployeeRepository(IConfiguration configuration,IMemoryCache memoryCache) : base(configuration["ConnectionStrings:Csv"])
         {
+            _memoryCache = memoryCache;
         }
 
         public void CreateImmediately(EmployeeDomainModel item)
@@ -38,16 +43,46 @@ namespace TrainingApi.Services.Repositories
 
         public EmployeeDomainModel Get(int id)
         {
-            using StreamReader sr = new(DataConnection);
-            using CsvReader scvReader = new(sr, CultureInfo.InvariantCulture);
-            return scvReader.GetRecords<EmployeeDomainModel>().First(empl => empl.Id == id);
+            var cacheKey = DataConnection + "employee";
+            if (!_memoryCache.TryGetValue(cacheKey, out List<EmployeeDomainModel> employeeList))
+            {
+                using StreamReader sr = new(DataConnection);
+                using CsvReader scvReader = new(sr, CultureInfo.InvariantCulture);
+                employeeList = scvReader.GetRecords<EmployeeDomainModel>().ToList();
+
+                var cacheExpirationOptions = new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpiration = DateTime.Now.AddHours(6),
+                    Priority = CacheItemPriority.Normal,
+                    SlidingExpiration = TimeSpan.FromMinutes(5)
+                };
+
+                _memoryCache.Set(cacheKey, employeeList, cacheExpirationOptions);
+            }
+
+            return employeeList.First(empl => empl.Id == id);
         }
 
         public IEnumerable<EmployeeDomainModel> GetAll()
         {
-            using StreamReader sr = new(DataConnection);
-            using CsvReader scvReader = new(sr, CultureInfo.InvariantCulture);
-            return scvReader.GetRecords<EmployeeDomainModel>().ToList();
+            var cacheKey = DataConnection + "employee";
+            if(!_memoryCache.TryGetValue(cacheKey, out List<EmployeeDomainModel> employeeList))
+            {
+                using StreamReader sr = new(DataConnection);
+                using CsvReader scvReader = new(sr, CultureInfo.InvariantCulture);
+                employeeList = scvReader.GetRecords<EmployeeDomainModel>().ToList();
+
+                var cacheExpirationOptions = new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpiration = DateTime.Now.AddHours(6),
+                    Priority = CacheItemPriority.Normal,
+                    SlidingExpiration = TimeSpan.FromMinutes(5)
+                };
+
+                _memoryCache.Set(cacheKey, employeeList, cacheExpirationOptions);
+            }
+            
+            return employeeList;
         }
     }
 }

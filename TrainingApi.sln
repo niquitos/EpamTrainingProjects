@@ -29,8 +29,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrainingApi.IntegrationTest
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitWindowsService", "Trainig_Api\RabbitWindowsService\RabbitWindowsService.csproj", "{AFE68559-C360-47A0-B9A2-7914114F0755}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{DBC6A17D-85AF-4331-9573-12AA7517AF59}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,10 +75,6 @@ Global
 		{AFE68559-C360-47A0-B9A2-7914114F0755}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AFE68559-C360-47A0-B9A2-7914114F0755}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AFE68559-C360-47A0-B9A2-7914114F0755}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DBC6A17D-85AF-4331-9573-12AA7517AF59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DBC6A17D-85AF-4331-9573-12AA7517AF59}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DBC6A17D-85AF-4331-9573-12AA7517AF59}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DBC6A17D-85AF-4331-9573-12AA7517AF59}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
