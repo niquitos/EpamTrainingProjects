@@ -20,16 +20,16 @@ namespace TrainingApi.Controllers
         private readonly IEmployeeUpdateSender _employeeUpdateSender;
         private readonly IHostedService _employeeConsumerService;
         private readonly IMapper _mapper;
-        private readonly IDataRepository<EmployeeDomainModel> _employeeRepository;
+        private readonly IDataRepository<EmployeeDomainModel> _employeeRepositoryDecorator;
 
         public EmployeeController(ILogger<EmployeeController> logger, IEmployeeUpdateSender employeeUpdateSender,
                                   IHostedService employeeConsumerService,
-                                  IDataRepository<EmployeeDomainModel> employeeRepository, IMapper mapper)
+                                  IDataRepository<EmployeeDomainModel> employeeRepositoryDecorator, IMapper mapper)
         {
             _logger = logger;
             _employeeUpdateSender = employeeUpdateSender;
             _employeeConsumerService = employeeConsumerService;
-            _employeeRepository = employeeRepository;
+            _employeeRepositoryDecorator = employeeRepositoryDecorator;
             _mapper = mapper;
             CancellationTokenSource source = new CancellationTokenSource();
             _employeeConsumerService.StartAsync(source.Token);
@@ -43,7 +43,7 @@ namespace TrainingApi.Controllers
         public  ActionResult Index()
         {
             _logger.LogInformation("Employee Index page loaded");
-            List<EmployeeModel> employees = _mapper.Map<List<EmployeeModel>>(_employeeRepository.GetAll());
+            List<EmployeeModel> employees = _mapper.Map<List<EmployeeModel>>(_employeeRepositoryDecorator.GetAll());
             
             return View(employees);
         }
@@ -84,7 +84,7 @@ namespace TrainingApi.Controllers
             {
                 EmployeeDomainModel employee = _mapper.Map<EmployeeModel, EmployeeDomainModel>(model);
 
-                _employeeRepository.CreateImmediately(employee);
+                _employeeRepositoryDecorator.CreateImmediately(employee);
 
                 _employeeUpdateSender.SendEmployee(employee);
 

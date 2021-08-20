@@ -47,7 +47,7 @@ namespace TrainingApi
             //services.AddScoped<IDataRepository<EmployeeDomainModel>, DapperEmployeeRepository>();
 
             //csv implementation
-            services.AddScoped<IDataRepository<EmployeeDomainModel>, CsvEmployeeRepository>();
+            services.AddScoped<IDataRepository<EmployeeDomainModel>, CsvDataRepositoryDecorator>();
 
             services.AddSwaggerGen(c=> 
             {
