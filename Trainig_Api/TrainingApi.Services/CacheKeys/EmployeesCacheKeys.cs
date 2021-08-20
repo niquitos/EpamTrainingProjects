@@ -1,4 +1,6 @@
-﻿namespace TrainingApi.Services.CacheKeys
+﻿using System.Collections.Generic;
+
+namespace TrainingApi.Services.CacheKeys
 {
     public static class EmployeesCacheKeys
     {

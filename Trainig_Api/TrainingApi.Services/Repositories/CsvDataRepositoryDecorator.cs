@@ -29,21 +29,15 @@ namespace TrainingApi.Services.Repositories
         }
 
         public EmployeeDomainModel Get(int id)
-        {  
-            if (!_memoryCache.TryGetValue(EmployeesCacheKeys.AllEmployeesKey, out List<EmployeeDomainModel> employeeList))
+        {
+            string key = id.ToString();
+            if (!_memoryCache.TryGetValue(key, out EmployeeDomainModel employee))
             {
-                employeeList = _csvEmployeeRepository.GetAll().ToList();
-                var cacheExpirationOptions = new MemoryCacheEntryOptions
-                {
-                    AbsoluteExpiration = DateTime.Now.AddHours(6),
-                    Priority = CacheItemPriority.Normal,
-                    SlidingExpiration = TimeSpan.FromMinutes(5)
-                };
-
-                _memoryCache.Set(EmployeesCacheKeys.AllEmployeesKey, employeeList, cacheExpirationOptions);
+                employee = _csvEmployeeRepository.Get(id);
+                _memoryCache.Set(key, employee, CreateCacheOptions());
             }
 
-            return employeeList.First(empl => empl.Id == id);
+            return employee;
         }
 
         public IEnumerable<EmployeeDomainModel> GetAll()
@@ -51,17 +45,20 @@ namespace TrainingApi.Services.Repositories
             if (!_memoryCache.TryGetValue(EmployeesCacheKeys.AllEmployeesKey, out List<EmployeeDomainModel> employeeList))
             {
                 employeeList = _csvEmployeeRepository.GetAll().ToList();
-                var cacheExpirationOptions = new MemoryCacheEntryOptions
-                {
-                    AbsoluteExpiration = DateTime.Now.AddHours(6),
-                    Priority = CacheItemPriority.Normal,
-                    SlidingExpiration = TimeSpan.FromMinutes(5)
-                };
-
-                _memoryCache.Set(EmployeesCacheKeys.AllEmployeesKey, employeeList, cacheExpirationOptions);
+                _memoryCache.Set(EmployeesCacheKeys.AllEmployeesKey, employeeList, CreateCacheOptions());
             }
 
             return employeeList;
+        }
+
+        private MemoryCacheEntryOptions CreateCacheOptions()
+        {
+            return new MemoryCacheEntryOptions
+            {
+                AbsoluteExpiration = DateTime.Now.AddHours(6),
+                Priority = CacheItemPriority.Normal,
+                SlidingExpiration = TimeSpan.FromMinutes(5)
+            };
         }
     }
 }
