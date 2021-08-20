@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TrainingApi.Services.CacheKeys;
 using TrainingApi.Services.DomainModels;
 
 namespace TrainingApi.Services.Repositories
@@ -28,9 +29,8 @@ namespace TrainingApi.Services.Repositories
         }
 
         public EmployeeDomainModel Get(int id)
-        {
-            var cacheKey = DataConnection + "employee";
-            if (!_memoryCache.TryGetValue(cacheKey, out List<EmployeeDomainModel> employeeList))
+        {  
+            if (!_memoryCache.TryGetValue(EmployeesCacheKeys.AllEmployeesKey, out List<EmployeeDomainModel> employeeList))
             {
                 employeeList = _csvEmployeeRepository.GetAll().ToList();
                 var cacheExpirationOptions = new MemoryCacheEntryOptions
@@ -40,7 +40,7 @@ namespace TrainingApi.Services.Repositories
                     SlidingExpiration = TimeSpan.FromMinutes(5)
                 };
 
-                _memoryCache.Set(cacheKey, employeeList, cacheExpirationOptions);
+                _memoryCache.Set(EmployeesCacheKeys.AllEmployeesKey, employeeList, cacheExpirationOptions);
             }
 
             return employeeList.First(empl => empl.Id == id);
@@ -48,8 +48,7 @@ namespace TrainingApi.Services.Repositories
 
         public IEnumerable<EmployeeDomainModel> GetAll()
         {
-            var cacheKey = DataConnection + "employee";
-            if (!_memoryCache.TryGetValue(cacheKey, out List<EmployeeDomainModel> employeeList))
+            if (!_memoryCache.TryGetValue(EmployeesCacheKeys.AllEmployeesKey, out List<EmployeeDomainModel> employeeList))
             {
                 employeeList = _csvEmployeeRepository.GetAll().ToList();
                 var cacheExpirationOptions = new MemoryCacheEntryOptions
@@ -59,7 +58,7 @@ namespace TrainingApi.Services.Repositories
                     SlidingExpiration = TimeSpan.FromMinutes(5)
                 };
 
-                _memoryCache.Set(cacheKey, employeeList, cacheExpirationOptions);
+                _memoryCache.Set(EmployeesCacheKeys.AllEmployeesKey, employeeList, cacheExpirationOptions);
             }
 
             return employeeList;
