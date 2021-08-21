@@ -6,7 +6,7 @@ namespace TrainingApi.IntegrationTests.Helpers
 {
     public static class Utilities
     {
-        public static void InitializeDbForTests(IDataRepository<EmployeeDomainModel> db)
+        public static void InitializeDbForTests(IEmployeeRepository<EmployeeDomainModel> db)
         {
             var list = GetDummyEmployees();
             foreach (var emp in list)

@@ -1,21 +1,19 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using TrainingApi.Mapping;
-using TrainingApi.Services.Context;
-using TrainingApi.Services.DomainModels;
-using TrainingApi.Services.Repositories;
-using System;
-using System.Reflection;
-using System.IO;
 using Microsoft.OpenApi.Models;
-using TrainingApi.Services.Messages;
 using Serilog;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
+using System;
+using System.IO;
+using System.Reflection;
+using TrainingApi.Mapping;
+using TrainingApi.Services.DomainModels;
+using TrainingApi.Services.Messages;
+using TrainingApi.Services.Repositories;
 
 namespace TrainingApi
 {
@@ -39,6 +37,8 @@ namespace TrainingApi
                                                                             cfg.AddProfile(new DtoToEmployeeModelProfile());
                                                                         })));
 
+            services.AddMemoryCache();
+
             //ef implementation
             //services.AddDbContext<EmployeeContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:Sql"]));
             //services.AddScoped<IDataRepository<EmployeeDomainModel>, EFEmployeeRepository>();
@@ -47,13 +47,17 @@ namespace TrainingApi
             //services.AddScoped<IDataRepository<EmployeeDomainModel>, DapperEmployeeRepository>();
 
             //csv implementation
-            services.AddScoped<IDataRepository<EmployeeDomainModel>, CsvDataRepositoryDecorator>();
 
-            services.AddSwaggerGen(c=> 
+            services.AddScoped<IEmployeeRepository<EmployeeDomainModel>>
+                (
+                sp => new EmployeeRepositoryDecorator(new CsvEmployeeRepository(Configuration), sp.GetRequiredService<IMemoryCache>())
+                );
+
+            services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo 
-                { 
-                    Version ="v1",
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
                     Title = "Training API",
                     Description = "A simple example ASP.NET Core Web API",
                     Contact = new OpenApiContact
@@ -70,7 +74,7 @@ namespace TrainingApi
             services.Configure<RabbitMqConfiguration>(Configuration.GetSection("RabbitMq"));
             services.AddTransient<IEmployeeUpdateSender, EmployeeUpdateSender>();
 
-            services.AddMemoryCache();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -93,8 +97,8 @@ namespace TrainingApi
 
             app.UseStaticFiles();
 
-            
-            app.UseSwagger(c=> { c.SerializeAsV2 = true; });
+
+            app.UseSwagger(c => { c.SerializeAsV2 = true; });
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Training API V1");

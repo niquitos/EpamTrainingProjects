@@ -8,7 +8,7 @@ using TrainingApi.Services.DomainModels;
 
 namespace TrainingApi.Services.Repositories
 {
-    public class DapperEmployeeRepository : ConnectionBase, IDataRepository<EmployeeDomainModel>
+    public class DapperEmployeeRepository : ConnectionBase, IEmployeeRepository<EmployeeDomainModel>
     {
 
         public DapperEmployeeRepository(IConfiguration configuration):base(configuration["ConnectionStrings:Sql"])

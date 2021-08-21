@@ -8,7 +8,7 @@ using TrainingApi.Services.DomainModels;
 
 namespace TrainingApi.Services.Repositories
 {
-    public class CsvEmployeeRepository : ConnectionBase, IDataRepository<EmployeeDomainModel>
+    public class CsvEmployeeRepository : ConnectionBase, IEmployeeRepository<EmployeeDomainModel>
     {
         public CsvEmployeeRepository(IConfiguration configuration) : base(configuration["ConnectionStrings:Csv"])
         {

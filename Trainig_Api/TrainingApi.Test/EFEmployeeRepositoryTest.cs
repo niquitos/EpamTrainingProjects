@@ -13,7 +13,7 @@ namespace TrainingApi.Tests
     public class EFEmployeeRepositoryTest
     {
         string _connectionString;
-        private IDataRepository<EmployeeDomainModel> _dr;
+        private IEmployeeRepository<EmployeeDomainModel> _dr;
 
         //[SetUp]
         public void Setup()

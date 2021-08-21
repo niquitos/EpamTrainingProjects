@@ -7,7 +7,7 @@ using TrainingApi.Services.DomainModels;
 
 namespace TrainingApi.Services.Repositories
 {
-    public class EFEmployeeRepository : IDataRepository<EmployeeDomainModel>
+    public class EFEmployeeRepository : IEmployeeRepository<EmployeeDomainModel>
     {
         private readonly EmployeeContext _db;
 

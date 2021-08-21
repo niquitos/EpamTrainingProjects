@@ -51,17 +51,17 @@ namespace TrainingApi.IntegrationTests.Basic
                 builder.ConfigureServices(services =>
                 {
                     services.RemoveAll(typeof(EmployeeContext));
-                    services.RemoveAll(typeof(IDataRepository<EmployeeDomainModel>));
+                    services.RemoveAll(typeof(IEmployeeRepository<EmployeeDomainModel>));
                     services.AddDbContext<EmployeeContext>(options =>
                     {
                         options.UseInMemoryDatabase("InMemoryDbForTesting");
                     });
-                    services.AddScoped<IDataRepository<EmployeeDomainModel>, EFEmployeeRepository>();
+                    services.AddScoped<IEmployeeRepository<EmployeeDomainModel>, EFEmployeeRepository>();
                     var serviceProvider = services.BuildServiceProvider();
                     using (var scope = serviceProvider.CreateScope())
                     {
                         var scopedServices = scope.ServiceProvider;
-                        var repository = scopedServices.GetRequiredService<IDataRepository<EmployeeDomainModel>>();
+                        var repository = scopedServices.GetRequiredService<IEmployeeRepository<EmployeeDomainModel>>();
                         var logger = scopedServices.GetRequiredService<ILogger<WebApplicationFactory<Startup>>>();
 
                         try

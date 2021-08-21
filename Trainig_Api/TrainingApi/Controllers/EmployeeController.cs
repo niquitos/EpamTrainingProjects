@@ -20,11 +20,11 @@ namespace TrainingApi.Controllers
         private readonly IEmployeeUpdateSender _employeeUpdateSender;
         private readonly IHostedService _employeeConsumerService;
         private readonly IMapper _mapper;
-        private readonly IDataRepository<EmployeeDomainModel> _employeeRepositoryDecorator;
+        private readonly IEmployeeRepository<EmployeeDomainModel> _employeeRepositoryDecorator;
 
         public EmployeeController(ILogger<EmployeeController> logger, IEmployeeUpdateSender employeeUpdateSender,
                                   IHostedService employeeConsumerService,
-                                  IDataRepository<EmployeeDomainModel> employeeRepositoryDecorator, IMapper mapper)
+                                  IEmployeeRepository<EmployeeDomainModel> employeeRepositoryDecorator, IMapper mapper)
         {
             _logger = logger;
             _employeeUpdateSender = employeeUpdateSender;
