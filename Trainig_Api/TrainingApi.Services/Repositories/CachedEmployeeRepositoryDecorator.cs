@@ -7,12 +7,12 @@ using TrainingApi.Services.DomainModels;
 
 namespace TrainingApi.Services.Repositories
 {
-    public class EmployeeRepositoryDecorator : IEmployeeRepository<EmployeeDomainModel>
+    public class CachedEmployeeRepositoryDecorator : IEmployeeRepository<EmployeeDomainModel>
     {
         private readonly IEmployeeRepository<EmployeeDomainModel> _employeeRepository;
         private readonly IMemoryCache _memoryCache;
 
-        public EmployeeRepositoryDecorator(IEmployeeRepository<EmployeeDomainModel> employeeRepository, IMemoryCache memoryCache)
+        public CachedEmployeeRepositoryDecorator(IEmployeeRepository<EmployeeDomainModel> employeeRepository, IMemoryCache memoryCache)
         {
             _employeeRepository = employeeRepository;
             _memoryCache = memoryCache;
@@ -30,7 +30,7 @@ namespace TrainingApi.Services.Repositories
 
         public EmployeeDomainModel Get(int id)
         {
-            string key = id.ToString();
+            string key = $"{typeof(EmployeeDomainModel)} {id}";
             if (!_memoryCache.TryGetValue(key, out EmployeeDomainModel employee))
             {
                 employee = _employeeRepository.Get(id);

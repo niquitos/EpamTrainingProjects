@@ -20,7 +20,7 @@ namespace TrainingApi.Controllers
         private readonly IEmployeeUpdateSender _employeeUpdateSender;
         private readonly IHostedService _employeeConsumerService;
         private readonly IMapper _mapper;
-        private readonly IEmployeeRepository<EmployeeDomainModel> _employeeRepositoryDecorator;
+        private readonly IEmployeeRepository<EmployeeDomainModel> _cachedEmployeeRepositoryDecorator;
 
         public EmployeeController(ILogger<EmployeeController> logger, IEmployeeUpdateSender employeeUpdateSender,
                                   IHostedService employeeConsumerService,
@@ -29,7 +29,7 @@ namespace TrainingApi.Controllers
             _logger = logger;
             _employeeUpdateSender = employeeUpdateSender;
             _employeeConsumerService = employeeConsumerService;
-            _employeeRepositoryDecorator = employeeRepositoryDecorator;
+            _cachedEmployeeRepositoryDecorator = employeeRepositoryDecorator;
             _mapper = mapper;
             CancellationTokenSource source = new CancellationTokenSource();
             _employeeConsumerService.StartAsync(source.Token);
@@ -43,7 +43,7 @@ namespace TrainingApi.Controllers
         public  ActionResult Index()
         {
             _logger.LogInformation("Employee Index page loaded");
-            List<EmployeeModel> employees = _mapper.Map<List<EmployeeModel>>(_employeeRepositoryDecorator.GetAll());
+            List<EmployeeModel> employees = _mapper.Map<List<EmployeeModel>>(_cachedEmployeeRepositoryDecorator.GetAll());
             
             return View(employees);
         }
@@ -84,7 +84,7 @@ namespace TrainingApi.Controllers
             {
                 EmployeeDomainModel employee = _mapper.Map<EmployeeModel, EmployeeDomainModel>(model);
 
-                _employeeRepositoryDecorator.CreateImmediately(employee);
+                _cachedEmployeeRepositoryDecorator.CreateImmediately(employee);
 
                 _employeeUpdateSender.SendEmployee(employee);
 

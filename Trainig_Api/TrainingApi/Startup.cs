@@ -47,11 +47,16 @@ namespace TrainingApi
             //services.AddScoped<IDataRepository<EmployeeDomainModel>, DapperEmployeeRepository>();
 
             //csv implementation
+            services.AddScoped<IEmployeeRepository<EmployeeDomainModel>, CsvEmployeeRepository>();
 
-            services.AddScoped<IEmployeeRepository<EmployeeDomainModel>>
-                (
-                sp => new EmployeeRepositoryDecorator(new CsvEmployeeRepository(Configuration), sp.GetRequiredService<IMemoryCache>())
-                );
+            //build intermediate version of provider to get services added so far
+            //we'll have two singlton providers actually...
+            var sp = services.BuildServiceProvider();
+
+            var scvRepository = sp.GetRequiredService<IEmployeeRepository<EmployeeDomainModel>>();
+            var memoryCache = sp.GetRequiredService<IMemoryCache>();
+
+            services.AddScoped<IEmployeeRepository<EmployeeDomainModel>>(sp => new CachedEmployeeRepositoryDecorator(scvRepository, memoryCache));
 
             services.AddSwaggerGen(c =>
             {
