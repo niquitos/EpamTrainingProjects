@@ -18,7 +18,7 @@ namespace TrainingApi.Services.Repositories
 
         public void CreateImmediately(EmployeeDomainModel item)
         {
-            item.Id = _id++;
+            item.Id = ++_id;
             using StreamWriter sw = new(DataConnection, true);
             using CsvWriter csvWriter = new(sw, CultureInfo.InvariantCulture);
             sw.WriteLine();
