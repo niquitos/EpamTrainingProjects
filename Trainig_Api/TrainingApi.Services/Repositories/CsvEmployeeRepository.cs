@@ -10,6 +10,7 @@ namespace TrainingApi.Services.Repositories
 {
     public class CsvEmployeeRepository : ConnectionBase, IEmployeeRepository<EmployeeDomainModel>
     {
+        private int _id;
         public CsvEmployeeRepository(IConfiguration configuration) : base(configuration["ConnectionStrings:Csv"])
         {
 
@@ -17,6 +18,7 @@ namespace TrainingApi.Services.Repositories
 
         public void CreateImmediately(EmployeeDomainModel item)
         {
+            item.Id = _id++;
             using StreamWriter sw = new(DataConnection, true);
             using CsvWriter csvWriter = new(sw, CultureInfo.InvariantCulture);
             sw.WriteLine();
@@ -39,7 +41,6 @@ namespace TrainingApi.Services.Repositories
 
         public EmployeeDomainModel Get(int id)
         {
-
             using StreamReader sr = new(DataConnection);
             using CsvReader scvReader = new(sr, CultureInfo.InvariantCulture);
             return scvReader.GetRecords<EmployeeDomainModel>().First(empl => empl.Id == id);
@@ -49,7 +50,9 @@ namespace TrainingApi.Services.Repositories
         {
             using StreamReader sr = new(DataConnection);
             using CsvReader scvReader = new(sr, CultureInfo.InvariantCulture);
-            return scvReader.GetRecords<EmployeeDomainModel>().ToList();
+            var employees = scvReader.GetRecords<EmployeeDomainModel>().ToList();
+            _id = employees.Max(employee => employee.Id);
+            return employees;
         }
     }
 }

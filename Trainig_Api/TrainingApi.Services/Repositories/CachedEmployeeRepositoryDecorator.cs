@@ -20,6 +20,12 @@ namespace TrainingApi.Services.Repositories
 
         public void CreateImmediately(EmployeeDomainModel item)
         {
+            if (!_memoryCache.TryGetValue(EmployeesCacheKeys.AllEmployeesKey, out List<EmployeeDomainModel> employeeList))
+            {
+                employeeList = _employeeRepository.GetAll().ToList();
+            }
+            employeeList.Add(item);
+            _memoryCache.Set(EmployeesCacheKeys.AllEmployeesKey, employeeList, CreateCacheOptions());
             _employeeRepository.CreateImmediately(item);
         }
 
