@@ -42,6 +42,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TrainingApi.Services\TrainingApi.Services.csproj" />
+    <ProjectReference Include="..\ValidationComponent\ValidationComponent.csproj" />
   </ItemGroup>
 
 </Project>
