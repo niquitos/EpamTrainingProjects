@@ -1,39 +1,50 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
+using System.Threading;
 using TrainingApi.Models;
 using TrainingApi.Services.DomainModels;
+using TrainingApi.Services.Messages;
 using TrainingApi.Services.Repositories;
 
 namespace TrainingApi.Controllers
 {
+    [Route("[controller]")]
     [ApiController]
     public class EmployeeController : Controller
     {
         private readonly ILogger<EmployeeController> _logger;
+        private readonly IEmployeeUpdateSender _employeeUpdateSender;
+        private readonly IHostedService _employeeConsumerService;
         private readonly IMapper _mapper;
-        private readonly IDataRepository<EmployeeDomainModel> _employeeRepository;
+        private readonly IEmployeeRepository<EmployeeDomainModel> _cachedEmployeeRepositoryDecorator;
 
-        public EmployeeController(ILogger<EmployeeController> logger,
-                                  IDataRepository<EmployeeDomainModel> employeeRepository, IMapper mapper)
+        public EmployeeController(ILogger<EmployeeController> logger, IEmployeeUpdateSender employeeUpdateSender,
+                                  IHostedService employeeConsumerService,
+                                  IEmployeeRepository<EmployeeDomainModel> employeeRepositoryDecorator, IMapper mapper)
         {
             _logger = logger;
-            _employeeRepository = employeeRepository;
+            _employeeUpdateSender = employeeUpdateSender;
+            _employeeConsumerService = employeeConsumerService;
+            _cachedEmployeeRepositoryDecorator = employeeRepositoryDecorator;
             _mapper = mapper;
+            CancellationTokenSource source = new CancellationTokenSource();
+            _employeeConsumerService.StartAsync(source.Token);
         }
 
         /// <summary>
         /// Loads employees from the database and passes them to the view
         /// </summary>
         /// <returns>A view that displays a table with all employees</returns>
-        [HttpGet("Employee/Index")]
-        public ActionResult Index()
+        [HttpGet("Index")]
+        public  ActionResult Index()
         {
-            List<EmployeeModel> employees = _mapper.Map<List<EmployeeModel>>(_employeeRepository.GetAll());
-
+            _logger.LogInformation("Employee Index page loaded");
+            List<EmployeeModel> employees = _mapper.Map<List<EmployeeModel>>(_cachedEmployeeRepositoryDecorator.GetAll());
+            
             return View(employees);
         }
 
@@ -42,7 +53,7 @@ namespace TrainingApi.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("Employee/Details")]
+        [HttpGet("Details")]
         public ActionResult Details(int id)
         {
             return View();
@@ -52,26 +63,30 @@ namespace TrainingApi.Controllers
         /// Loads a form to create an employee
         /// </summary>
         /// <returns>A view with the form fields and a submit button</returns>
-        [HttpGet("Employee/Create")]
+        [HttpGet("Create")]
         public ActionResult Create()
         {
+            _logger.LogInformation("Here you can create an employee");
             return View();
         }
 
         /// <summary>
-        /// Saves an employee to the database
+        /// Saves an employee to the database and sends a message to RabbitMq
         /// </summary>
         /// <param name="model">An employee model created in the form</param>
         /// <returns>If the model is valid redirects to the view with employee table. If not then loads a form to create an employee.</returns>
         [ValidateAntiForgeryToken]
-        [HttpPost("Employee/Create")]
-        public ActionResult Create(EmployeeModel model)
+        [HttpPost("Create")]
+        public ActionResult Create([FromForm] EmployeeModel model)
         {
+            if (!ModelState.IsValid) return ValidationProblem();
             if (ModelState.IsValid)
-            {  
+            {
                 EmployeeDomainModel employee = _mapper.Map<EmployeeModel, EmployeeDomainModel>(model);
 
-                _employeeRepository.CreateImmediately(employee);
+                _cachedEmployeeRepositoryDecorator.CreateImmediately(employee);
+
+                _employeeUpdateSender.SendEmployee(employee);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -83,7 +98,7 @@ namespace TrainingApi.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("Employee/Edit")]
+        [HttpGet("Edit")]
         public ActionResult Edit(int id)
         {
             return View();
@@ -96,7 +111,7 @@ namespace TrainingApi.Controllers
         /// <param name="collection"></param>
         /// <returns></returns>
         [ValidateAntiForgeryToken]
-        [HttpPost("Employee/Edit")]
+        [HttpPost("Edit")]
         public ActionResult Edit(int id, IFormCollection collection)
         {
             try
@@ -109,12 +124,12 @@ namespace TrainingApi.Controllers
             }
         }
 
-       /// <summary>
-       /// Does nothing for now
-       /// </summary>
-       /// <param name="id"></param>
-       /// <returns></returns>
-        [HttpGet("Employee/Delete")]
+        /// <summary>
+        /// Does nothing for now
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("Delete")]
         public ActionResult Delete(int id)
         {
             return View();
@@ -127,7 +142,7 @@ namespace TrainingApi.Controllers
         /// <param name="collection"></param>
         /// <returns></returns>
         [ValidateAntiForgeryToken]
-        [HttpPost("Employee/Delete")]
+        [HttpDelete("Delete")]
         public ActionResult Delete(int id, IFormCollection collection)
         {
             try

@@ -1,18 +1,19 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using TrainingApi.Mapping;
-using TrainingApi.Services.Context;
-using TrainingApi.Services.DomainModels;
-using TrainingApi.Services.Repositories;
-using System;
-using System.Reflection;
-using System.IO;
 using Microsoft.OpenApi.Models;
+using Serilog;
+using System;
+using System.IO;
+using System.Reflection;
+using TrainingApi.Mapping;
+using TrainingApi.Services.DomainModels;
+using TrainingApi.Services.Messages;
+using TrainingApi.Services.Repositories;
 
 namespace TrainingApi
 {
@@ -36,6 +37,8 @@ namespace TrainingApi
                                                                             cfg.AddProfile(new DtoToEmployeeModelProfile());
                                                                         })));
 
+            services.AddMemoryCache();
+
             //ef implementation
             //services.AddDbContext<EmployeeContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:Sql"]));
             //services.AddScoped<IDataRepository<EmployeeDomainModel>, EFEmployeeRepository>();
@@ -44,13 +47,22 @@ namespace TrainingApi
             //services.AddScoped<IDataRepository<EmployeeDomainModel>, DapperEmployeeRepository>();
 
             //csv implementation
-            services.AddScoped<IDataRepository<EmployeeDomainModel>, CsvEmployeeRepository>();
+            services.AddScoped<IEmployeeRepository<EmployeeDomainModel>, CsvEmployeeRepository>();
 
-            services.AddSwaggerGen(c=> 
+            //build intermediate version of provider to get services added so far
+            //we'll have two singlton providers actually...
+            var sp = services.BuildServiceProvider();
+
+            var scvRepository = sp.GetRequiredService<IEmployeeRepository<EmployeeDomainModel>>();
+            var memoryCache = sp.GetRequiredService<IMemoryCache>();
+
+            services.AddScoped<IEmployeeRepository<EmployeeDomainModel>>(sp => new CachedEmployeeRepositoryDecorator(scvRepository, memoryCache));
+
+            services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo 
-                { 
-                    Version ="v1",
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
                     Title = "Training API",
                     Description = "A simple example ASP.NET Core Web API",
                     Contact = new OpenApiContact
@@ -62,6 +74,12 @@ namespace TrainingApi
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
+
+            services.AddOptions();
+            services.Configure<RabbitMqConfiguration>(Configuration.GetSection("RabbitMq"));
+            services.AddTransient<IEmployeeUpdateSender, EmployeeUpdateSender>();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -77,11 +95,15 @@ namespace TrainingApi
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseSerilogRequestLogging();
+
             app.UseHttpsRedirection();
+
             app.UseStaticFiles();
 
-            
-            app.UseSwagger(c=> { c.SerializeAsV2 = true; });
+
+            app.UseSwagger(c => { c.SerializeAsV2 = true; });
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Training API V1");
@@ -93,9 +115,7 @@ namespace TrainingApi
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllers();
             });
         }
     }

@@ -7,7 +7,7 @@ using TrainingApi.Services.DomainModels;
 
 namespace TrainingApi.Services.Repositories
 {
-    public class EFEmployeeRepository : IDataRepository<EmployeeDomainModel>
+    public class EFEmployeeRepository : IEmployeeRepository<EmployeeDomainModel>
     {
         private readonly EmployeeContext _db;
 
@@ -18,24 +18,24 @@ namespace TrainingApi.Services.Repositories
 
         public IEnumerable<EmployeeDomainModel> GetAll()
         {
-            return _db.Employees.ToList();
+            return _db.Employee.ToList();
         }
 
         public EmployeeDomainModel Get(int id)
         {
-            return _db.Employees.Find(id);
+            return _db.Employee.Find(id);
         }
 
         public void CreateImmediately(EmployeeDomainModel item)
         {
-            _db.Employees.Add(item);
+            _db.Employee.Add(item);
             Save();
         }
 
         public void DeleteImmediately(int id)
         {
-            EmployeeDomainModel item = _db.Employees.Find(id);
-            if (item != null) _db.Employees.Remove(item);
+            EmployeeDomainModel item = _db.Employee.Find(id);
+            if (item != null) _db.Employee.Remove(item);
             Save();
         }
 

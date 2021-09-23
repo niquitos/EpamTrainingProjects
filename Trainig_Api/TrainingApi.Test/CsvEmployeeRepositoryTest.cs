@@ -13,7 +13,7 @@ namespace TrainingApi.Tests
     {
         private Mock<IConfiguration> _configMock;
         string _connectionString;
-        private IDataRepository<EmployeeDomainModel> _dr;
+        private IEmployeeRepository<EmployeeDomainModel> _dr;
 
         [SetUp]
         public void Setup()

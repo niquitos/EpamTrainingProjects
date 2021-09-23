@@ -8,18 +8,18 @@ using TrainingApi.Services.DomainModels;
 
 namespace TrainingApi.Services.Repositories
 {
-    public class CsvEmployeeRepository : IDataRepository<EmployeeDomainModel>
+    public class CsvEmployeeRepository : ConnectionBase, IEmployeeRepository<EmployeeDomainModel>
     {
-        private readonly string _connectionString;
-
-        public CsvEmployeeRepository(IConfiguration configuration)
+        private int _id;
+        public CsvEmployeeRepository(IConfiguration configuration) : base(configuration["ConnectionStrings:Csv"])
         {
-            _connectionString = configuration["ConnectionStrings:Csv"];
+
         }
 
         public void CreateImmediately(EmployeeDomainModel item)
         {
-            using StreamWriter sw = new(_connectionString, true);
+            item.Id = ++_id;
+            using StreamWriter sw = new(DataConnection, true);
             using CsvWriter csvWriter = new(sw, CultureInfo.InvariantCulture);
             sw.WriteLine();
             csvWriter.WriteRecord(item);
@@ -29,7 +29,7 @@ namespace TrainingApi.Services.Repositories
         {
             var items = GetAll().ToList();
 
-            using StreamWriter sw = new(_connectionString, false);
+            using StreamWriter sw = new(DataConnection, false);
             using CsvWriter csvWriter = new(sw, CultureInfo.InvariantCulture);
             var item = items.First(empl => empl.Id == id);
             if (items.Any())
@@ -41,16 +41,18 @@ namespace TrainingApi.Services.Repositories
 
         public EmployeeDomainModel Get(int id)
         {
-            using StreamReader sr = new(_connectionString);
+            using StreamReader sr = new(DataConnection);
             using CsvReader scvReader = new(sr, CultureInfo.InvariantCulture);
             return scvReader.GetRecords<EmployeeDomainModel>().First(empl => empl.Id == id);
         }
 
         public IEnumerable<EmployeeDomainModel> GetAll()
         {
-            using StreamReader sr = new(_connectionString);
+            using StreamReader sr = new(DataConnection);
             using CsvReader scvReader = new(sr, CultureInfo.InvariantCulture);
-            return scvReader.GetRecords<EmployeeDomainModel>().ToList();
+            var employees = scvReader.GetRecords<EmployeeDomainModel>().ToList();
+            _id = employees.Max(employee => employee.Id);
+            return employees;
         }
     }
 }
