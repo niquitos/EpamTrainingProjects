@@ -29,7 +29,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrainingApi.IntegrationTest
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitWindowsService", "Trainig_Api\RabbitWindowsService\RabbitWindowsService.csproj", "{AFE68559-C360-47A0-B9A2-7914114F0755}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValidationComponent", "Trainig_Api\ValidationComponent\ValidationComponent.csproj", "{3FD70D8D-8A08-4FAB-B60C-A2F85E47B4D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ValidationComponent", "Trainig_Api\ValidationComponent\ValidationComponent.csproj", "{3FD70D8D-8A08-4FAB-B60C-A2F85E47B4D1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AspNetAuthentication", "AspNetAuthentication", "{2B7CBB4A-EDDA-445C-B35F-9152BBFD6FF8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicAuthentication", "Asp_Net_Authentication\BasicAuthentication\BasicAuthentication.csproj", "{CD015FD2-735A-4CF1-B19D-E8E0B6A64600}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +85,10 @@ Global
 		{3FD70D8D-8A08-4FAB-B60C-A2F85E47B4D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3FD70D8D-8A08-4FAB-B60C-A2F85E47B4D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3FD70D8D-8A08-4FAB-B60C-A2F85E47B4D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD015FD2-735A-4CF1-B19D-E8E0B6A64600}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD015FD2-735A-4CF1-B19D-E8E0B6A64600}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD015FD2-735A-4CF1-B19D-E8E0B6A64600}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD015FD2-735A-4CF1-B19D-E8E0B6A64600}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -98,6 +106,7 @@ Global
 		{3A411892-5825-4511-9F33-EC13B7E48E58} = {A3D3757C-A41E-4DE6-A449-7B1BC3028663}
 		{AFE68559-C360-47A0-B9A2-7914114F0755} = {A3D3757C-A41E-4DE6-A449-7B1BC3028663}
 		{3FD70D8D-8A08-4FAB-B60C-A2F85E47B4D1} = {A3D3757C-A41E-4DE6-A449-7B1BC3028663}
+		{CD015FD2-735A-4CF1-B19D-E8E0B6A64600} = {2B7CBB4A-EDDA-445C-B35F-9152BBFD6FF8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {24527FAC-F5E9-49D3-A3AF-9AC5B288C38C}

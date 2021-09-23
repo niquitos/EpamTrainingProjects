@@ -361,3 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/Asp_Net_Authentication/BasicAuthentication/appsettings.Development.json
+/Asp_Net_Authentication/BasicAuthentication/appsettings.json
