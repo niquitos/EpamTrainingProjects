@@ -27,12 +27,6 @@ namespace IdentityExample
             .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
 
-            //services.AddAuthentication("CookieAuth")
-            //    .AddCookie("CookieAuth", config =>
-            //    {
-            //        config.Cookie.Name = "Grandma's.Cookie";
-            //        config.LoginPath = "/Home/Authenticate";
-            //    });
             services.AddControllersWithViews();
         }
 
