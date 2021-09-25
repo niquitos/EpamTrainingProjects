@@ -14,16 +14,22 @@ namespace BasicAuthentication.Controllers
             return View();
         }
 
-        //[Authorize]
-        //public IActionResult Secret()
-        //{
-        //    return View();
-        //}
-
-        [Authorize(Policy = "Claim.DoB")]
+        [Authorize]
         public IActionResult Secret()
         {
             return View();
+        }
+
+        [Authorize(Policy = "Claim.DoB")]
+        public IActionResult SecretPolicy()
+        {
+            return View("Secret");
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult SecretAdmin()
+        {
+            return View("Secret");
         }
 
         public IActionResult Authenticate()
@@ -32,7 +38,6 @@ namespace BasicAuthentication.Controllers
             {
                new Claim(ClaimTypes.Name, "Bob"),
                new Claim(ClaimTypes.Email, "Bob@fmail.com"),
-               new Claim(ClaimTypes.DateOfBirth, "11/11/01"),
                new Claim("Grandma says", "Very nice boy")
             };
 
@@ -42,10 +47,17 @@ namespace BasicAuthentication.Controllers
                new Claim("DrivingLicense", "A+")
             };
 
+            var customClaims = new List<Claim>
+            {
+               new Claim(ClaimTypes.DateOfBirth, "11/11/01"),
+               new Claim(ClaimTypes.Role, "Admin")
+            };
+
             var grandmaIdentity = new ClaimsIdentity(grandmaClaims, "Grandma Identity");
             var licenseIdentity = new ClaimsIdentity(licenseClaims, "Government");
+            var customIdentity = new ClaimsIdentity(customClaims, "CustomClaims");
 
-            var userPrinciple = new ClaimsPrincipal(new[] { grandmaIdentity, licenseIdentity });
+            var userPrinciple = new ClaimsPrincipal( new ClaimsIdentity[] { grandmaIdentity, licenseIdentity, customIdentity });
 
             HttpContext.SignInAsync(userPrinciple);
 
