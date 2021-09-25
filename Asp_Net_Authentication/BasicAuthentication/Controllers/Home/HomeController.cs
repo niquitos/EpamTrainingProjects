@@ -8,12 +8,19 @@ namespace BasicAuthentication.Controllers
 {
     public class HomeController : Controller
     {
+
         public IActionResult Index()
         {
             return View();
         }
 
-        [Authorize]
+        //[Authorize]
+        //public IActionResult Secret()
+        //{
+        //    return View();
+        //}
+
+        [Authorize(Policy = "Claim.DoB")]
         public IActionResult Secret()
         {
             return View();
@@ -25,6 +32,7 @@ namespace BasicAuthentication.Controllers
             {
                new Claim(ClaimTypes.Name, "Bob"),
                new Claim(ClaimTypes.Email, "Bob@fmail.com"),
+               new Claim(ClaimTypes.DateOfBirth, "11/11/01"),
                new Claim("Grandma says", "Very nice boy")
             };
 
