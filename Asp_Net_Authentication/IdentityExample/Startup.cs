@@ -1,34 +1,31 @@
-using BasicAuthentication.AuthorizationRequirement;
-using Microsoft.AspNetCore.Authorization;
+using IdentityExample.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Security.Claims;
 
-namespace BasicAuthentication
+namespace IdentityExample
 {
     public class Startup
     {
-
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthentication("CookieAuth")
-                .AddCookie("CookieAuth", config => 
-                {
-                    config.Cookie.Name = "Grandma's.Cookie";
-                    config.LoginPath = "/Home/Authenticate";
-                });
-
-            services.AddAuthorization(config =>
+            services.AddDbContext<AppDbContext>(config=> 
             {
-                config.AddPolicy("Claim.DoB", policyBuilder =>
-                {
-                    policyBuilder.RequireCustomClaim(ClaimTypes.DateOfBirth);
-                });
-            });
-
-            services.AddScoped<IAuthorizationHandler, CustomRequireClaimHandler>();
+                config.UseInMemoryDatabase("Memory");
+            })
+            .AddIdentity<IdentityUser, IdentityRole>(config=> 
+            {
+                config.Password.RequireDigit = false;
+                config.Password.RequiredLength = 1;
+                config.Password.RequireNonAlphanumeric = false;
+                config.Password.RequireUppercase = false;
+                config.Password.RequireLowercase = false;
+            })
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddDefaultTokenProviders();
 
             services.AddControllersWithViews();
         }
@@ -40,7 +37,7 @@ namespace BasicAuthentication
                 app.UseDeveloperExceptionPage();
             }
             app.UseRouting();
-            
+
             app.UseAuthentication();
 
             app.UseAuthorization();
