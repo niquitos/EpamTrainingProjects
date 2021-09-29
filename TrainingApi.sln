@@ -35,7 +35,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AspNetAuthentication", "Asp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicAuthentication", "Asp_Net_Authentication\BasicAuthentication\BasicAuthentication.csproj", "{CD015FD2-735A-4CF1-B19D-E8E0B6A64600}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityExample", "Asp_Net_Authentication\IdentityExample\IdentityExample.csproj", "{FF99F77D-B51C-442C-B11D-E690D402BDAE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityExample", "Asp_Net_Authentication\IdentityExample\IdentityExample.csproj", "{FF99F77D-B51C-442C-B11D-E690D402BDAE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
