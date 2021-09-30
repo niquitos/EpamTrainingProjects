@@ -1,1 +1,9 @@
 ﻿<h1>Home page</h1>
+<a href="\Home\Secret">Go to Secrete page</a>
+
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService authorizationService
+@if((await authorizationService.AuthorizeAsync(User, "Claim.DoB")).Succeeded)
+ {
+    <h1>User has DoB claim</h1>
+ }

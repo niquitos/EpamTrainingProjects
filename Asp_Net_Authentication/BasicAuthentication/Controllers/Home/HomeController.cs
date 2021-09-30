@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace BasicAuthentication.Controllers
 {
@@ -57,11 +58,27 @@ namespace BasicAuthentication.Controllers
             var licenseIdentity = new ClaimsIdentity(licenseClaims, "Government");
             var customIdentity = new ClaimsIdentity(customClaims, "CustomClaims");
 
-            var userPrinciple = new ClaimsPrincipal( new ClaimsIdentity[] { grandmaIdentity, licenseIdentity, customIdentity });
+            var userPrinciple = new ClaimsPrincipal(new ClaimsIdentity[] { grandmaIdentity, licenseIdentity, customIdentity });
 
             HttpContext.SignInAsync(userPrinciple);
 
             return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> DoStuff([FromServices] IAuthorizationService authorizationService)
+        {
+            var builder = new AuthorizationPolicyBuilder("Schema");
+
+            var customPolicy = builder.RequireClaim("Hello").Build();
+
+            var authResult = await authorizationService.AuthorizeAsync(User, customPolicy);
+
+            if (authResult.Succeeded)
+            {
+                return View("Index");
+            }
+
+            return View("Index");
         }
     }
 }
