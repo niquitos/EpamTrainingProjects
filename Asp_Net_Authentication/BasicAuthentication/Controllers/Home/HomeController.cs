@@ -33,6 +33,7 @@ namespace BasicAuthentication.Controllers
             return View("Secret");
         }
 
+        [AllowAnonymous]
         public IActionResult Authenticate()
         {
             var grandmaClaims = new List<Claim>()
@@ -71,9 +72,7 @@ namespace BasicAuthentication.Controllers
 
             var customPolicy = builder.RequireClaim("Hello").Build();
 
-            var authResult = await authorizationService.AuthorizeAsync(User, customPolicy);
-
-            if (authResult.Succeeded)
+            if ((await authorizationService.AuthorizeAsync(User, customPolicy)).Succeeded)
             {
                 return View("Index");
             }

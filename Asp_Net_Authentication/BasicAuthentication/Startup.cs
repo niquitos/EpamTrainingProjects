@@ -2,6 +2,7 @@ using BasicAuthentication.AuthorizationRequirement;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Security.Claims;
@@ -14,7 +15,7 @@ namespace BasicAuthentication
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAuthentication("CookieAuth")
-                .AddCookie("CookieAuth", config => 
+                .AddCookie("CookieAuth", config =>
                 {
                     config.Cookie.Name = "Grandma's.Cookie";
                     config.LoginPath = "/Home/Authenticate";
@@ -22,6 +23,11 @@ namespace BasicAuthentication
 
             services.AddAuthorization(config =>
             {
+                config.AddPolicy("Admin", policyBuilder =>
+                {
+                    policyBuilder.RequireClaim(ClaimTypes.Role, "Admin");
+                });
+
                 config.AddPolicy("Claim.DoB", policyBuilder =>
                 {
                     policyBuilder.RequireCustomClaim(ClaimTypes.DateOfBirth);
@@ -30,7 +36,13 @@ namespace BasicAuthentication
 
             services.AddScoped<IAuthorizationHandler, CustomRequireClaimHandler>();
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews(config=> 
+            {
+                var defaultBuilder = new AuthorizationPolicyBuilder();
+                var defaultAuthPolicy = defaultBuilder.RequireAuthenticatedUser().Build();
+
+                config.Filters.Add(new AuthorizeFilter(defaultAuthPolicy));
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -40,7 +52,7 @@ namespace BasicAuthentication
                 app.UseDeveloperExceptionPage();
             }
             app.UseRouting();
-            
+
             app.UseAuthentication();
 
             app.UseAuthorization();
