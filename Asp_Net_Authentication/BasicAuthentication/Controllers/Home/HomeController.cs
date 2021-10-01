@@ -39,42 +39,37 @@ namespace BasicAuthentication.Controllers
         {
             return View("Secret");
         }
-       
+
         [SecurityLevelAttribute(10)]
         public IActionResult SecretHigherLevel()
         {
             return View("Secret");
         }
 
-       
+
+        [AllowAnonymous]
         public IActionResult Authenticate()
         {
             var grandmaClaims = new List<Claim>()
             {
-               new Claim(ClaimTypes.Name, "Bob"),
-               new Claim(ClaimTypes.Email, "Bob@fmail.com"),
-               new Claim("Grandma says", "Very nice boy")
+                new Claim(ClaimTypes.DateOfBirth, "11/11/2000"),
+                new Claim(ClaimTypes.Role, "Admin"),
+                new Claim(DynamicPolicies.SecurityLevel, "7"),
             };
 
             var licenseClaims = new List<Claim>()
             {
-               new Claim(ClaimTypes.Name, "Bob K Foo"),
-               new Claim("DrivingLicense", "A+")
-            };
-
-            var customClaims = new List<Claim>
-            {
-               new Claim(ClaimTypes.DateOfBirth, "11/11/01"),
-               new Claim(ClaimTypes.Role, "Admin")
+                new Claim(ClaimTypes.Name, "Bob K Foo"),
+                new Claim("DrivingLicense", "A+"),
             };
 
             var grandmaIdentity = new ClaimsIdentity(grandmaClaims, "Grandma Identity");
             var licenseIdentity = new ClaimsIdentity(licenseClaims, "Government");
-            var customIdentity = new ClaimsIdentity(customClaims, "CustomClaims");
 
-            var userPrinciple = new ClaimsPrincipal(new ClaimsIdentity[] { grandmaIdentity, licenseIdentity, customIdentity });
+            var userPrincipal = new ClaimsPrincipal(new[] { grandmaIdentity, licenseIdentity });
+            //-----------------------------------------------------------
 
-            HttpContext.SignInAsync(userPrinciple);
+            HttpContext.SignInAsync(userPrincipal);
 
             return RedirectToAction("Index");
         }
