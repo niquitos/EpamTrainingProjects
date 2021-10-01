@@ -1,4 +1,6 @@
 using BasicAuthentication.AuthorizationRequirement;
+using BasicAuthentication.Transformer;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +38,7 @@ namespace BasicAuthentication
 
             services.AddScoped<IAuthorizationHandler, CustomRequireClaimHandler>();
             services.AddScoped<IAuthorizationHandler, CookieJarAuthorizationHandler>();
+            services.AddScoped<IClaimsTransformation, ClaimsTransformation>();
 
             services.AddControllersWithViews(config=> 
             {
