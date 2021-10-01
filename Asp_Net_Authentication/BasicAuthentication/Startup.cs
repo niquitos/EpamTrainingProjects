@@ -1,4 +1,5 @@
 using BasicAuthentication.AuthorizationRequirement;
+using BasicAuthentication.CustomPolicyProvider;
 using BasicAuthentication.Transformer;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -36,17 +37,14 @@ namespace BasicAuthentication
                 });
             });
 
+            services.AddSingleton<IAuthorizationPolicyProvider, CustomAuthorizationPolicyProvider>();
+            services.AddScoped<IAuthorizationHandler, SecurityLevelHandler>();
+
             services.AddScoped<IAuthorizationHandler, CustomRequireClaimHandler>();
             services.AddScoped<IAuthorizationHandler, CookieJarAuthorizationHandler>();
             services.AddScoped<IClaimsTransformation, ClaimsTransformation>();
 
-            services.AddControllersWithViews(config=> 
-            {
-                var defaultBuilder = new AuthorizationPolicyBuilder();
-                var defaultAuthPolicy = defaultBuilder.RequireAuthenticatedUser().Build();
-
-                config.Filters.Add(new AuthorizeFilter(defaultAuthPolicy));
-            });
+            services.AddControllersWithViews();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

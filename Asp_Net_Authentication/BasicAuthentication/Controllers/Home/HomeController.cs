@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using BasicAuthentication.CustomPolicyProvider;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -33,7 +34,19 @@ namespace BasicAuthentication.Controllers
             return View("Secret");
         }
 
-        [AllowAnonymous]
+        [SecurityLevelAttribute(5)]
+        public IActionResult SecretLevel()
+        {
+            return View("Secret");
+        }
+       
+        [SecurityLevelAttribute(10)]
+        public IActionResult SecretHigherLevel()
+        {
+            return View("Secret");
+        }
+
+       
         public IActionResult Authenticate()
         {
             var grandmaClaims = new List<Claim>()
