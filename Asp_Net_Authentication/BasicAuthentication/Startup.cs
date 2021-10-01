@@ -35,6 +35,7 @@ namespace BasicAuthentication
             });
 
             services.AddScoped<IAuthorizationHandler, CustomRequireClaimHandler>();
+            services.AddScoped<IAuthorizationHandler, CookieJarAuthorizationHandler>();
 
             services.AddControllersWithViews(config=> 
             {
