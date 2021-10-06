@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -47,14 +46,14 @@ namespace Server.Controllers
             var algorithm = SecurityAlgorithms.HmacSha256;
 
             var signingCredentials = new SigningCredentials(key, algorithm);
-            var token = new JwtSecurityToken(Constants.Issuer,Constants.Audience,claims,DateTime.Now,
-                                             DateTime.Now.AddHours(1),signingCredentials);
+            var token = new JwtSecurityToken(Constants.Issuer, Constants.Audience, claims, DateTime.Now,
+                                             DateTime.Now.AddHours(1), signingCredentials);
             var access_token = new JwtSecurityTokenHandler().WriteToken(token);
 
-            var responseObject = new 
-            { 
+            var responseObject = new
+            {
                 access_token = access_token,
-                token_type = "example",
+                token_type = "Bearer",
                 expires_in = 3600
             };
 
