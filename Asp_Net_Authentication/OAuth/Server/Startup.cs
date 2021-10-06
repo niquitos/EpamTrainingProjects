@@ -15,31 +15,31 @@ namespace Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAuthentication("OAuth")
-                .AddJwtBearer("OAuth", config =>
-                 {
-                     var secretBytes = Encoding.UTF8.GetBytes(Constants.Secret);
-                     var key = new SymmetricSecurityKey(secretBytes);
-
-                     config.Events = new JwtBearerEvents()
+                    .AddJwtBearer("OAuth", config =>
                      {
-                         OnMessageReceived = context =>
+                         var secretBytes = Encoding.UTF8.GetBytes(Constants.Secret);
+                         var key = new SymmetricSecurityKey(secretBytes);
+
+                         config.Events = new JwtBearerEvents()
                          {
-                             if (context.Request.Query.ContainsKey("access_token"))
+                             OnMessageReceived = context =>
                              {
-                                 context.Token = context.Request.Query["access_token"];
+                                 if (context.Request.Query.ContainsKey("access_token"))
+                                 {
+                                     context.Token = context.Request.Query["access_token"];
+                                 }
+
+                                 return Task.CompletedTask;
                              }
+                         };
 
-                             return Task.CompletedTask;
-                         }
-                     };
-
-                     config.TokenValidationParameters = new TokenValidationParameters()
-                     {
-                         ValidIssuer = Constants.Issuer,
-                         ValidAudience = Constants.Audience,
-                         IssuerSigningKey = key
-                     };
-                 });
+                         config.TokenValidationParameters = new TokenValidationParameters()
+                         {
+                             ValidIssuer = Constants.Issuer,
+                             ValidAudience = Constants.Audience,
+                             IssuerSigningKey = key
+                         };
+                     });
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
 

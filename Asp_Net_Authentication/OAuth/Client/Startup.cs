@@ -9,7 +9,7 @@ namespace Client
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthentication(config =>
+            services.AddAuthentication(config=> 
             {
                 config.DefaultAuthenticateScheme = "ClientCookie";
                 config.DefaultSignInScheme = "ClientCookie";
@@ -24,8 +24,7 @@ namespace Client
                 config.AuthorizationEndpoint = "https://localhost:44377/oauth/authorize";
                 config.TokenEndpoint = "https://localhost:44377/oauth/token";
             });
-
-            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            services.AddControllersWithViews();
         }
 
 
