@@ -34,7 +34,8 @@ namespace Server.Controllers
             return Redirect($"{redirectUri}{query}");
         }
 
-        public IActionResult Token(string grant_type, string code, string redirect_uri, string client_id)
+        public IActionResult Token(string grant_type, string code, string redirect_uri, string client_id,
+                                   string refresh_token)
         {
             var claims = new[]
             {
@@ -47,15 +48,21 @@ namespace Server.Controllers
             var algorithm = SecurityAlgorithms.HmacSha256;
 
             var signingCredentials = new SigningCredentials(key, algorithm);
-            var token = new JwtSecurityToken(Constants.Issuer, Constants.Audience, claims, DateTime.Now,
-                                             DateTime.Now.AddMilliseconds(1), signingCredentials);
+            var token = new JwtSecurityToken(Constants.Issuer,
+                                             Constants.Audience,
+                                             claims,
+                                             DateTime.Now,
+                                             grant_type == "refresh_token"
+                                             ? DateTime.Now.AddMinutes(5)
+                                             : DateTime.Now.AddMilliseconds(1),
+                                             signingCredentials);
             var access_token = new JwtSecurityTokenHandler().WriteToken(token);
 
             var responseObject = new
             {
                 access_token = access_token,
                 token_type = "Bearer",
-                expires_in = 3600
+                refresh_token = "RefreshTokenSampleValueSomething77"
             };
 
             return Ok(responseObject);
