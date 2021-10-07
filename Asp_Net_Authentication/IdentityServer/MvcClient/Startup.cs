@@ -3,18 +3,26 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace IdentityServer
+namespace MvcClient
 {
     public class Startup
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddIdentityServer()
-                .AddDeveloperSigningCredential()
-                .AddInMemoryIdentityResources(Configuration.IdentityResources)
-                .AddInMemoryApiScopes(Configuration.ApiScopes)
-                .AddInMemoryClients(Configuration.Clients);
-                //.AddDeveloperSigningCredential();
+            services.AddAuthentication(config=> 
+            {
+                config.DefaultScheme = "Cookie";
+                config.DefaultChallengeScheme = "oidc";
+            })
+            .AddCookie("Cookie")
+            .AddOpenIdConnect("oidc", config=> 
+            {
+                config.Authority = "https://localhost:44360/";
+                config.ClientId = "client_id_mvc";
+                config.ClientSecret = "client_secret_mvc";
+                config.SaveTokens = true;
+                config.ResponseType = "code";
+            });
 
             services.AddControllersWithViews();
         }
@@ -28,7 +36,10 @@ namespace IdentityServer
 
             app.UseRouting();
 
-            app.UseIdentityServer();
+            app.UseStaticFiles();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

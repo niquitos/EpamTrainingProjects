@@ -49,11 +49,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecurityAPI", "Asp_Net_Auth
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IdentityServer", "IdentityServer", "{059BDE99-3DB1-4F0B-AAE9-A74DCB44649D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer", "Asp_Net_Authentication\IdentityServer\IdentityServer\IdentityServer.csproj", "{551735BB-1233-419A-8366-B2FBD96BBCCF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer", "Asp_Net_Authentication\IdentityServer\IdentityServer\IdentityServer.csproj", "{551735BB-1233-419A-8366-B2FBD96BBCCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiOne", "Asp_Net_Authentication\IdentityServer\ApiOne\ApiOne.csproj", "{594B458F-E33B-45C5-AC0A-6A98C2279105}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiOne", "Asp_Net_Authentication\IdentityServer\ApiOne\ApiOne.csproj", "{594B458F-E33B-45C5-AC0A-6A98C2279105}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiTwo", "Asp_Net_Authentication\IdentityServer\ApiTwo\ApiTwo.csproj", "{169FE4FA-B063-4F53-B08A-B16709192EA2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiTwo", "Asp_Net_Authentication\IdentityServer\ApiTwo\ApiTwo.csproj", "{169FE4FA-B063-4F53-B08A-B16709192EA2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcClient", "Asp_Net_Authentication\IdentityServer\MvcClient\MvcClient.csproj", "{F0C26B5E-DA75-4729-A517-24CF360094DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -137,6 +139,10 @@ Global
 		{169FE4FA-B063-4F53-B08A-B16709192EA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{169FE4FA-B063-4F53-B08A-B16709192EA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{169FE4FA-B063-4F53-B08A-B16709192EA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0C26B5E-DA75-4729-A517-24CF360094DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0C26B5E-DA75-4729-A517-24CF360094DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0C26B5E-DA75-4729-A517-24CF360094DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0C26B5E-DA75-4729-A517-24CF360094DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -165,6 +171,7 @@ Global
 		{551735BB-1233-419A-8366-B2FBD96BBCCF} = {059BDE99-3DB1-4F0B-AAE9-A74DCB44649D}
 		{594B458F-E33B-45C5-AC0A-6A98C2279105} = {059BDE99-3DB1-4F0B-AAE9-A74DCB44649D}
 		{169FE4FA-B063-4F53-B08A-B16709192EA2} = {059BDE99-3DB1-4F0B-AAE9-A74DCB44649D}
+		{F0C26B5E-DA75-4729-A517-24CF360094DA} = {059BDE99-3DB1-4F0B-AAE9-A74DCB44649D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {24527FAC-F5E9-49D3-A3AF-9AC5B288C38C}
