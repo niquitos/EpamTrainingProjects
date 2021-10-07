@@ -1,10 +1,10 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SecurityAPI.AuthRequirements;
-using System.Security.Claims;
 
 namespace SecurityAPI
 {
@@ -12,9 +12,10 @@ namespace SecurityAPI
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthentication();
+            services.AddAuthentication("DefaultAuth")
+                .AddScheme<AuthenticationSchemeOptions, CustomAuthenticationHandler>("DefaultAuth", null);
 
-            services.AddAuthorization(config=> 
+            services.AddAuthorization(config =>
             {
                 var defaultAuthBuilder = new AuthorizationPolicyBuilder();
                 var defaultAuthPolicy = defaultAuthBuilder
@@ -23,7 +24,7 @@ namespace SecurityAPI
 
                 config.DefaultPolicy = defaultAuthPolicy;
             })
-            .AddScoped<IAuthorizationHandler,JwtRequirementHandler>()
+            .AddScoped<IAuthorizationHandler, JwtRequirementHandler>()
             .AddHttpClient()
             .AddHttpContextAccessor()
             .AddControllers();

@@ -35,7 +35,8 @@ namespace Client.Controllers
             {
                 return View();
             }
-            return Ok(serverResponse.Content);
+            string response = $"server response: {serverResponse.StatusCode}, api response: {apiResponse.StatusCode}";
+            return Ok(response);
 
         }
     }

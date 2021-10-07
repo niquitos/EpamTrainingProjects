@@ -48,7 +48,7 @@ namespace Server.Controllers
 
             var signingCredentials = new SigningCredentials(key, algorithm);
             var token = new JwtSecurityToken(Constants.Issuer, Constants.Audience, claims, DateTime.Now,
-                                             DateTime.Now.AddHours(1), signingCredentials);
+                                             DateTime.Now.AddMilliseconds(1), signingCredentials);
             var access_token = new JwtSecurityTokenHandler().WriteToken(token);
 
             var responseObject = new

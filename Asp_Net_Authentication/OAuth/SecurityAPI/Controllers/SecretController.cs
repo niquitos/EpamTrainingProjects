@@ -6,9 +6,9 @@ namespace SecurityAPI.Controllers
     public class SecretController : Controller
     {
         [Authorize]
-        public string Index()
+        public IActionResult Index()
         {
-            return "secret message";
+            return Ok("secret message");
         }
     }
 }
