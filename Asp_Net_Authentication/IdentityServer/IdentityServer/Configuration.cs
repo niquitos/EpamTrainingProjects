@@ -42,13 +42,14 @@ namespace IdentityServer
 
                 RedirectUris ={ "https://localhost:44308/signin-oidc" },
 
-                AllowedScopes = 
-                { 
-                    "ApiOne", 
+                AllowedScopes =
+                {
+                    "ApiOne",
                     "ApiTwo",
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile
-                }
+                },
+                RequireConsent=false
             }
         };
     }
