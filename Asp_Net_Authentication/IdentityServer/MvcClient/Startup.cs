@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,8 +23,18 @@ namespace MvcClient
                 config.ClientSecret = "client_secret_mvc";
                 config.SaveTokens = true;
                 config.ResponseType = "code";
+                config.GetClaimsFromUserInfoEndpoint = true;
+               
+                config.ClaimActions.DeleteClaim("s_hash");
+                config.ClaimActions.MapUniqueJsonKey("AlexNikitin.Grandma", "an.grandma");
+                config.Scope.Clear();
+                config.Scope.Add("openid");
+                config.Scope.Add("an.scope");
+                config.Scope.Add("ApiOne");
+                config.Scope.Add("ApiTwo");
             });
 
+            services.AddHttpClient();
             services.AddControllersWithViews();
         }
 

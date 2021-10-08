@@ -9,12 +9,20 @@ namespace IdentityServer
         public static IEnumerable<IdentityResource> IdentityResources => new List<IdentityResource>
         {
             new IdentityResources.OpenId(),
-            new IdentityResources.Profile()
+            new IdentityResources.Profile(),
+            new IdentityResource
+            {
+                Name="an.scope",
+                UserClaims =
+                {
+                    "an.grandma"
+                }
+            }
         };
 
         public static IEnumerable<ApiScope> ApiScopes => new List<ApiScope>
         {
-            new ApiScope("ApiOne", "My Api"),
+            new ApiScope("ApiOne", "My Api", new string[] { "an.api.grandma" }),
              new ApiScope("ApiTwo", "Client serving as Api")
         };
 
@@ -47,9 +55,13 @@ namespace IdentityServer
                     "ApiOne",
                     "ApiTwo",
                     IdentityServerConstants.StandardScopes.OpenId,
-                    IdentityServerConstants.StandardScopes.Profile
+                    IdentityServerConstants.StandardScopes.Profile,
+                    "an.scope"
                 },
                 RequireConsent=false
+
+                //puts all the claims in the id token
+                //AlwaysIncludeUserClaimsInIdToken = true
             }
         };
     }
