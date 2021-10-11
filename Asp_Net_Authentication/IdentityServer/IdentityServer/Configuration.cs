@@ -62,6 +62,20 @@ namespace IdentityServer
                 AllowOfflineAccess=true
                 //puts all the claims in the id token
                 //AlwaysIncludeUserClaimsInIdToken = true
+            },
+            new Client
+            {
+                ClientId="client_id_js",
+                AllowedGrantTypes = GrantTypes.Implicit,
+                RedirectUris ={ "https://localhost:44308/home/signin" },
+                AllowedScopes =
+                {
+                    IdentityServerConstants.StandardScopes.OpenId,
+                    "ApiOne"
+                },
+                AllowAccessTokensViaBrowser=true,
+                RequireConsent=false
+
             }
         };
     }

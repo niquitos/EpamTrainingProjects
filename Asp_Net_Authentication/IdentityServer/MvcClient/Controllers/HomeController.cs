@@ -2,11 +2,8 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MvcClient.Controllers
@@ -67,12 +64,12 @@ namespace MvcClient.Controllers
 
             var tokenResponse = await refreshTokenClient.RequestRefreshTokenAsync(
                 new RefreshTokenRequest
-            {
-                Address = discoveryDocument.TokenEndpoint,
-                RefreshToken = refreshToken,
-                ClientId = "client_id_mvc",
-                ClientSecret = "client_secret_mvc"
-            });
+                {
+                    Address = discoveryDocument.TokenEndpoint,
+                    RefreshToken = refreshToken,
+                    ClientId = "client_id_mvc",
+                    ClientSecret = "client_secret_mvc"
+                });
 
             var authInfo = await HttpContext.AuthenticateAsync("Cookie");
 
@@ -86,5 +83,6 @@ namespace MvcClient.Controllers
             var idTokenDifferent = !idToken.Equals(tokenResponse.IdentityToken);
             var refreshTokenDifferent = !refreshToken.Equals(tokenResponse.RefreshToken);
         }
+
     }
 }
