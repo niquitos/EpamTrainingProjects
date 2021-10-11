@@ -32,6 +32,7 @@ namespace MvcClient
                 config.Scope.Add("an.scope");
                 config.Scope.Add("ApiOne");
                 config.Scope.Add("ApiTwo");
+                config.Scope.Add("offline_access");
             });
 
             services.AddHttpClient();

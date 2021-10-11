@@ -58,8 +58,8 @@ namespace IdentityServer
                     IdentityServerConstants.StandardScopes.Profile,
                     "an.scope"
                 },
-                RequireConsent=false
-
+                RequireConsent=false,
+                AllowOfflineAccess=true
                 //puts all the claims in the id token
                 //AlwaysIncludeUserClaimsInIdToken = true
             }
