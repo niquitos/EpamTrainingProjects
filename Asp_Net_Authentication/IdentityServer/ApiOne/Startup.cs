@@ -21,7 +21,13 @@ namespace ApiOne
                     ValidateAudience = false
                 };
             });
-            
+
+            services.AddCors(config => config
+            .AddPolicy("AllowAll", p => 
+                p.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()));
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -32,6 +38,8 @@ namespace ApiOne
             }
 
             app.UseRouting();
+
+            app.UseCors("AllowAll");
 
             app.UseAuthentication();
 

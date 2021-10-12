@@ -1,5 +1,16 @@
 ﻿<h1>This is a sign in page</h1>
 
-<button onclick="extractTokens()">Extract token</button>
+<a href="/home/index">Back to home</a>;
 
-<script src="~/sing-in-callback.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.9.1/oidc-client.min.js"></script>
+
+
+<script>
+    var userManager = new Oidc.UserManager();
+
+    userManager.signinCallback().then(res => {
+        console.log(res);
+    });
+
+    
+</script>

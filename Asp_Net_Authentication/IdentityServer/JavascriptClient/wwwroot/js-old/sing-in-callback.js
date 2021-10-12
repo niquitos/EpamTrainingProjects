@@ -1,7 +1,4 @@
-﻿
-
-
-var extractTokens = function () {
+﻿var extractTokens = function () {
     var address = window.location.href;
     var returnValue = address.split('#')[1];
     var values = returnValue.split('&');
