@@ -41,6 +41,11 @@ namespace MvcClient.Controllers
             return View(model: new { result });
         }
 
+        public IActionResult Logout()
+        {
+            return SignOut("Cookie","oidc");
+        }
+
         private async Task<string> GetSecret(string accessToken)
         {
             var apiClient = _httpClientFactory.CreateClient();

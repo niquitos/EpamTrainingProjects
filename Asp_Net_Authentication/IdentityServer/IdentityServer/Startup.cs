@@ -1,18 +1,36 @@
 using IdentityServer.Data;
+using IdentityServer4.EntityFramework.DbContexts;
+using IdentityServer4.EntityFramework.Mappers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Linq;
+using System.Security.Claims;
 
 namespace IdentityServer
 {
     public class Startup
     {
+        private readonly IConfiguration _configuration;
+
+        public Startup(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AppDbContext>(config => config.UseInMemoryDatabase("Memory"))
+            var connectionString = _configuration.GetConnectionString("DefaultConnection");
+
+            services.AddDbContext<AppDbContext>(config =>
+            {
+                config.UseSqlServer(connectionString);
+                //config.UseInMemoryDatabase("Memory");
+            })
             .AddIdentity<IdentityUser, IdentityRole>(config =>
             {
                 config.Password.RequiredLength = 4;
@@ -23,25 +41,39 @@ namespace IdentityServer
             .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
 
-            services.ConfigureApplicationCookie(config => 
+            services.ConfigureApplicationCookie(config =>
             {
                 config.Cookie.Name = "IdentityServer.Cookie";
                 config.LoginPath = "/Auth/Login";
+                config.LogoutPath = "/Auth/Logout";
             });
+
+            var assembly = typeof(Startup).Assembly.GetName().Name;
 
             services.AddIdentityServer()
                 .AddAspNetIdentity<IdentityUser>()
-                .AddDeveloperSigningCredential()
-                .AddInMemoryIdentityResources(Configuration.IdentityResources)
-                .AddInMemoryApiScopes(Configuration.ApiScopes)
-                .AddInMemoryClients(Configuration.Clients);
-                //.AddDeveloperSigningCredential();
+                .AddConfigurationStore(options =>
+                {
+                    options.ConfigureDbContext = b => b.UseSqlServer(connectionString,
+                        sql => sql.MigrationsAssembly(assembly));
+                })
+                .AddOperationalStore(options =>
+                {
+                    options.ConfigureDbContext = b => b.UseSqlServer(connectionString,
+                          sql => sql.MigrationsAssembly(assembly));
+                })
+                .AddDeveloperSigningCredential();
+            //.AddInMemoryIdentityResources(Configuration.IdentityResources)
+            //.AddInMemoryApiScopes(Configuration.ApiScopes)
+            //.AddInMemoryClients(Configuration.Clients);
 
             services.AddControllersWithViews();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            //InitializeDatabase(app);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -55,6 +87,51 @@ namespace IdentityServer
             {
                 endpoints.MapDefaultControllerRoute();
             });
+
+
+        }
+
+        private void InitializeDatabase(IApplicationBuilder app)
+        {
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
+
+                var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
+
+                context.Database.EnsureDeleted();
+                context.Database.Migrate();
+
+                if (!context.Clients.Any())
+                {
+                    foreach (var client in Configuration.Clients)
+                    {
+                        context.Clients.Add(client.ToEntity());
+                    }
+                    context.SaveChanges();
+                }
+
+                if (!context.IdentityResources.Any())
+                {
+                    foreach (var resource in Configuration.IdentityResources)
+                    {
+                        context.IdentityResources.Add(resource.ToEntity());
+                    }
+                    context.SaveChanges();
+                }
+
+                if (!context.ApiScopes.Any())
+                {
+                    foreach (var resource in Configuration.ApiScopes)
+                    {
+                        context.ApiScopes.Add(resource.ToEntity());
+                    }
+                    context.SaveChanges();
+                }
+               
+            }
+
+            
         }
     }
 }

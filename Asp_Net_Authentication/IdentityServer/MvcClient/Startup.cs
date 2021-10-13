@@ -24,7 +24,7 @@ namespace MvcClient
                 config.SaveTokens = true;
                 config.ResponseType = "code";
                 config.GetClaimsFromUserInfoEndpoint = true;
-               
+                config.SignedOutCallbackPath = "/Home/Index";
                 config.ClaimActions.DeleteClaim("s_hash");
                 config.ClaimActions.MapUniqueJsonKey("AlexNikitin.Grandma", "an.grandma");
                 config.Scope.Clear();

@@ -2,6 +2,7 @@
 
 namespace IdentityServer.Models
 {
+
     public class RegisterViewModel
     {
         [Required]

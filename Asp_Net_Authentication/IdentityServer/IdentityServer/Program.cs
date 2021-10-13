@@ -1,8 +1,10 @@
+using IdentityServer4.EntityFramework.DbContexts;
+using IdentityServer4.EntityFramework.Mappers;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Security.Claims;
+using System.Linq;
 
 namespace IdentityServer
 {
@@ -12,20 +14,15 @@ namespace IdentityServer
         {
             var host = CreateHostBuilder(args).Build();
 
-            using (var scope = host.Services.CreateScope())
-            {
-                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
-
-                var user = new IdentityUser("Bob");
-                userManager.CreateAsync(user, "password").GetAwaiter().GetResult();
-                userManager.AddClaimAsync(user, new Claim("an.grandma", "big.cookie" ))
-                    .GetAwaiter().GetResult();
-                userManager.AddClaimAsync(user, new Claim("an.api.grandma", "big.api.cookie"))
-                    .GetAwaiter().GetResult();
-            }
+            //using (var scope = host.Services.CreateScope())
+            //{
+            //    InititalizeDatabase(scope);
+            //}
 
             host.Run();
         }
+
+
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
@@ -33,5 +30,43 @@ namespace IdentityServer
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+
+        private static void InititalizeDatabase(IServiceScope scope)
+        {
+            scope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>()
+                                .Database.Migrate();
+
+            var context = scope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
+
+
+            context.Database.Migrate();
+
+            if (!context.Clients.Any())
+            {
+                foreach (var client in Configuration.Clients)
+                {
+                    context.Clients.Add(client.ToEntity());
+                }
+                context.SaveChanges();
+            }
+
+            if (!context.IdentityResources.Any())
+            {
+                foreach (var resource in Configuration.IdentityResources)
+                {
+                    context.IdentityResources.Add(resource.ToEntity());
+                }
+                context.SaveChanges();
+            }
+
+            if (!context.ApiScopes.Any())
+            {
+                foreach (var resource in Configuration.ApiScopes)
+                {
+                    context.ApiScopes.Add(resource.ToEntity());
+                }
+                context.SaveChanges();
+            }
+        }
     }
 }

@@ -49,6 +49,7 @@ namespace IdentityServer
                 },
 
                 RedirectUris ={ "https://localhost:44308/signin-oidc" },
+                PostLogoutRedirectUris ={ "https://localhost:44308/Home/Index" },
 
                 AllowedScopes =
                 {
@@ -70,17 +71,20 @@ namespace IdentityServer
 
                 RedirectUris ={ "https://localhost:44308/home/signin" },
                 AllowedCorsOrigins = { "https://localhost:44308" },
+                PostLogoutRedirectUris ={ "https://localhost:44308/Home/Index" },
 
                 AllowedScopes =
                 {
-                    IdentityServerConstants.StandardScopes.OpenId,
                     "ApiOne",
                     "ApiTwo",
+                    IdentityServerConstants.StandardScopes.OpenId,
+                    IdentityServerConstants.StandardScopes.Profile,
                     "an.scope"
                 },
-                AccessTokenLifetime =1,
+                //AccessTokenLifetime =1,
                 AllowAccessTokensViaBrowser=true,
-                RequireConsent=false
+                RequireConsent=false,
+                AllowOfflineAccess=true
 
             }
         };
