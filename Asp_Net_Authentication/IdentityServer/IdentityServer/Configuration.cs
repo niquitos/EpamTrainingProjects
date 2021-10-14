@@ -69,9 +69,9 @@ namespace IdentityServer
                 ClientId="client_id_js",
                 AllowedGrantTypes = GrantTypes.Implicit,
 
-                RedirectUris ={ "https://localhost:44308/home/signin" },
-                AllowedCorsOrigins = { "https://localhost:44308" },
-                PostLogoutRedirectUris ={ "https://localhost:44308/Home/Index" },
+                RedirectUris ={ "https://localhost:44310/home/signin" },
+                AllowedCorsOrigins = { "https://localhost:44310" },
+                PostLogoutRedirectUris ={ "https://localhost:44310/Home/Index" },
 
                 AllowedScopes =
                 {

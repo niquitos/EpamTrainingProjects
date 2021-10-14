@@ -2,7 +2,8 @@
     userStore: new Oidc.WebStorageStateStore({store: window.localStorage}),
     authority: "https://localhost:44360/",
     client_id: "client_id_js",
-    redirect_uri: "https://localhost:44308/Home/SignIn",
+    redirect_uri: "https://localhost:44310/Home/SignIn",
+    post_logout_redirect_uri: "https://localhost:44310/Home/Index",
     response_type: "id_token token",
     scope: "openid ApiOne an.scope ApiTwo"
 };
@@ -12,6 +13,10 @@ var userManager = new Oidc.UserManager(config);
 var signIn = function () {
     userManager.signinRedirect();
 };
+
+var signOut = function () {
+    userManager.signoutRedirect();
+}
 
 userManager.getUser().then(user => {
     console.log("user: ", user);
