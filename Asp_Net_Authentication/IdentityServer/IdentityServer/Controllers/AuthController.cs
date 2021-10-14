@@ -2,6 +2,7 @@
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace IdentityServer.Controllers
@@ -36,13 +37,18 @@ namespace IdentityServer.Controllers
         }
 
         [HttpGet]
-        public IActionResult Login(string returnUrl)
+        public async Task<IActionResult> LoginAsync(string returnUrl)
         {
-            return View(new LoginViewModel { ReturnUrl = returnUrl });
+            var externalProviders = await _signInManager.GetExternalAuthenticationSchemesAsync();
+            return View(new LoginViewModel
+            {
+                ReturnUrl = returnUrl,
+                ExternalProviders = externalProviders
+            });
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel vm)
+        public async Task<IActionResult> LoginAsync(LoginViewModel vm)
         {
             if (!ModelState.IsValid)
             {
@@ -62,6 +68,76 @@ namespace IdentityServer.Controllers
             }
 
             return View(vm);
+        }
+
+        public IActionResult ExternalLogin(string provider, string returnUrl)
+        {
+            var redirectUri = Url.Action("ExternalLoginCallback", "Auth", new { returnUrl });
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUri);
+
+            return Challenge(properties, provider);
+        }
+
+        public async Task<IActionResult> ExternalLoginCallbackAsync(string returnUrl)
+        {
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+
+            if (info == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            var result = await _signInManager
+                .ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
+
+            if (result.Succeeded)
+            {
+                return Redirect(returnUrl);
+            }
+
+            var username = info.Principal.FindFirst(ClaimTypes.Name).Value;
+
+            return View("ExternalRegister", new ExternalRegisterViewModel
+            {
+                Username = username,
+                ReturnUrl = returnUrl
+            });
+        }
+
+
+        public async Task<IActionResult> ExternalRegisterAsync(ExternalRegisterViewModel vm)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(vm);
+            }
+
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+
+            if (info == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            var username = vm.Username.Replace(" ", "_");
+            var user = new UserModel(username);
+            var result = await _userManager.CreateAsync(user);
+
+            if (!result.Succeeded)
+            {
+                return View(vm);
+            }
+
+            result = await _userManager.AddLoginAsync(user, info);
+
+            if (!result.Succeeded)
+            {
+                return View(vm);
+            }
+
+             await _signInManager.SignInAsync(user, false);
+
+            return Redirect(vm.ReturnUrl);
         }
 
         [HttpGet]

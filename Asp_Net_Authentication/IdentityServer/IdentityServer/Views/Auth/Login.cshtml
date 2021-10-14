@@ -3,9 +3,22 @@
     Layout = "_Layout";
 }
 <body>
+    <h1 class="text-center">Sign in with</h1>
+    <div class="row justify-content-center">
+        <form class="p-3 border border-dark rounded" asp-controller="Auth" asp-action="ExternalLogin"
+              asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            @foreach (var provider in Model.ExternalProviders)
+            {
+                <button class="btn btn-primary" name="provider" value="@provider.Name" type="submit">
+                    @provider.Name
+                </button>
+            }
+        </form>
+    </div>
+
     <h1 class="text-center">Login page</h1>
     <div class="row justify-content-center">
-        <form class="p-3 border border-dark rounded" asp-controller="Auth" asp-action="Login" method="post" >
+        <form class="p-3 border border-dark rounded" asp-controller="Auth" asp-action="Login" method="post">
             <input type="hidden" asp-for="ReturnUrl" />
             <div class="form-group">
                 <label>Username</label>
@@ -16,7 +29,7 @@
                 <input class="form-control" asp-for="Password" />
             </div>
             <button type="submit" class="btn btn-primary">Sign In</button>
-            
+
         </form>
     </div>
     <div class="row justify-content-center">
