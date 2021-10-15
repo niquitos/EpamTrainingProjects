@@ -1,0 +1,18 @@
+﻿<h1>This is a sign in page</h1>
+
+<a href="/home/index">Back to home</a>;
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client/1.9.1/oidc-client.min.js"></script>
+
+
+<script>
+    var userManager = new Oidc.UserManager({ userStore: new Oidc.WebStorageStateStore({ store: window.localStorage })});
+
+    userManager.signinCallback().then(res => {
+        console.log(res);
+
+        window.location.href = "/home/index";
+    });
+
+    
+</script>
