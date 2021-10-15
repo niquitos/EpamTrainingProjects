@@ -39,14 +39,14 @@ namespace IdentityServer
                 // scopes that client has access to
                 AllowedScopes = { "ApiOne" }
             },
+
+            //MvcClient
             new Client
             {
                 ClientId = "client_id_mvc",
                 AllowedGrantTypes = GrantTypes.Code,
-                ClientSecrets =
-                {
-                    new Secret("client_secret_mvc".Sha256())
-                },
+                RequirePkce=true,
+                ClientSecrets ={ new Secret("client_secret_mvc".Sha256())},
 
                 RedirectUris ={ "https://localhost:44308/signin-oidc" },
                 PostLogoutRedirectUris ={ "https://localhost:44308/Home/Index" },
@@ -64,10 +64,14 @@ namespace IdentityServer
                 //puts all the claims in the id token
                 //AlwaysIncludeUserClaimsInIdToken = true
             },
+
+            //JavaScript Client
             new Client
             {
                 ClientId="client_id_js",
-                AllowedGrantTypes = GrantTypes.Implicit,
+                AllowedGrantTypes = GrantTypes.Code,
+                RequirePkce=true,
+                RequireClientSecret=false,
 
                 RedirectUris ={ "https://localhost:44310/home/signin" },
                 AllowedCorsOrigins = { "https://localhost:44310" },

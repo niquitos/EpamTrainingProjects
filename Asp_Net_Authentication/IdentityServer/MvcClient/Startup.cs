@@ -23,10 +23,18 @@ namespace MvcClient
                 config.ClientSecret = "client_secret_mvc";
                 config.SaveTokens = true;
                 config.ResponseType = "code";
-                config.GetClaimsFromUserInfoEndpoint = true;
+                
                 config.SignedOutCallbackPath = "/Home/Index";
+
+                //configure Cookie claim mapping
                 config.ClaimActions.DeleteClaim("s_hash");
                 config.ClaimActions.MapUniqueJsonKey("AlexNikitin.Grandma", "an.grandma");
+
+                //trips to load claims into the cookie
+                //but the id token is smaller
+                config.GetClaimsFromUserInfoEndpoint = true;
+
+                //configure scopes
                 config.Scope.Clear();
                 config.Scope.Add("openid");
                 config.Scope.Add("an.scope");

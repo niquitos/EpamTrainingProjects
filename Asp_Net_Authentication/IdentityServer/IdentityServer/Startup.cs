@@ -55,24 +55,24 @@ namespace IdentityServer
 
             //var filePath = Path.Combine(_webHostEnvironment.ContentRootPath, "is_cert.pfx");
             //var certificate = new X509Certificate2(filePath,"password");
-
+           
             services.AddIdentityServer()
             .AddAspNetIdentity<IdentityUser>()
-            .AddConfigurationStore(options =>
-            {
-                options.ConfigureDbContext = b => b.UseSqlServer(connectionString,
-                    sql => sql.MigrationsAssembly(assembly));
-            })
-            .AddOperationalStore(options =>
-            {
-                options.ConfigureDbContext = b => b.UseSqlServer(connectionString,
-                      sql => sql.MigrationsAssembly(assembly));
-            })
+            //.AddConfigurationStore(options =>
+            //{
+            //    options.ConfigureDbContext = b => b.UseSqlServer(connectionString,
+            //        sql => sql.MigrationsAssembly(assembly));
+            //})
+            //.AddOperationalStore(options =>
+            //{
+            //    options.ConfigureDbContext = b => b.UseSqlServer(connectionString,
+            //          sql => sql.MigrationsAssembly(assembly));
+            //})
             //.AddSigningCredential(certificate);
-            .AddDeveloperSigningCredential();
-            //.AddInMemoryIdentityResources(Configuration.IdentityResources)
-            //.AddInMemoryApiScopes(Configuration.ApiScopes)
-            //.AddInMemoryClients(Configuration.Clients);
+            .AddDeveloperSigningCredential()
+            .AddInMemoryIdentityResources(Configuration.IdentityResources)
+            .AddInMemoryApiScopes(Configuration.ApiScopes)
+            .AddInMemoryClients(Configuration.Clients);
 
             services.AddAuthentication()
                 .AddFacebook(config=> 
