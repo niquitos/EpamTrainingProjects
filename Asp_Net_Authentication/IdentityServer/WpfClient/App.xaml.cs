@@ -26,7 +26,7 @@ namespace WpfClient
                 ClientId = "client_id_wpf",
                 Scope = "openid ApiOne",
                 RedirectUri = "http://localhost/sample-wpf-app",
-                Browser = new WpfEmbeddedBrowser()
+                Browser = new WpfEmbeddedBrowser(Container)
             };
 
             containerRegistry.RegisterSingleton<IAuthorizationService>(() => new AuthorizationService(options));

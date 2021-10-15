@@ -1,37 +1,31 @@
 ﻿
 using IdentityModel.OidcClient.Browser;
+using Prism.Ioc;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
+using WpfClient.Views;
 
 namespace WpfClient.Infrastructure.Browser
 {
     public class WpfEmbeddedBrowser : IBrowser
     {
+        private readonly IContainerProvider _containerProvider;
         private BrowserOptions _options = null;
 
-        public WpfEmbeddedBrowser()
+        public WpfEmbeddedBrowser(IContainerProvider containerProvider)
         {
-
+            _containerProvider = containerProvider;
         }
 
         public async Task<BrowserResult> InvokeAsync(BrowserOptions options, CancellationToken cancellationToken = default)
         {
             _options = options;
 
-            var window = new Window()
-            {
-                Width = 900,
-                Height = 625,
-                Title = "IdentityServer Demo Login"
-            };
-
-            // Note: Unfortunately, WebBrowser is very limited and does not give sufficient information for 
-            //   robust error handling. The alternative is to use a system browser or third party embedded
-            //   library (which tend to balloon the size of your application and are complicated).
-            var webBrowser = new WebBrowser();
+            var window = _containerProvider.Resolve<WpfBrowserWindow>();
+            window.Width = 900;
+            window.Height = 625;
+            window.Title = "IdentityServer Demo Login";
 
             var signal = new SemaphoreSlim(0, 1);
 
@@ -40,7 +34,7 @@ namespace WpfClient.Infrastructure.Browser
                 ResultType = BrowserResultType.UserCancel
             };
 
-            webBrowser.Navigating += (s, e) =>
+            window._wpfBrowser.Navigating += (s, e) =>
             {
                 if (BrowserIsNavigatingToRedirectUri(e.Uri))
                 {
@@ -63,9 +57,8 @@ namespace WpfClient.Infrastructure.Browser
                 signal.Release();
             };
 
-            window.Content = webBrowser;
             window.Show();
-            webBrowser.Source = new Uri(_options.StartUrl);
+            window._wpfBrowser.Source = new Uri(_options.StartUrl);
 
             await signal.WaitAsync();
 
