@@ -8,12 +8,16 @@
     <div class="row justify-content-center">
         <form class="p-3 border border-dark rounded" asp-controller="Auth" asp-action="ExternalLogin"
               asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            @foreach (var provider in Model.ExternalProviders)
+            @if (Model.ExternalProviders != null)
             {
-                <button class="btn btn-primary" name="provider" value="@provider.Name" type="submit">
-                    @provider.Name
-                </button>
+                foreach (var provider in Model.ExternalProviders)
+                {
+                    <button class="btn btn-primary" name="provider" value="@provider.Name" type="submit">
+                        @provider.Name
+                    </button>
+                }
             }
+
         </form>
     </div>
 
@@ -36,6 +40,9 @@
     <div class="row justify-content-center">
         <a asp-controller="Auth" asp-action="Register"
            asp-route-returnUrl="@Model.ReturnUrl">Register</a>
+    </div>
+    <div class="row justify-content-center text-danger">
+        @Model.Message
     </div>
 
 </body>

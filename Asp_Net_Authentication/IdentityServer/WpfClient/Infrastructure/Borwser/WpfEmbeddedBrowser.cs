@@ -1,10 +1,9 @@
-﻿
-using IdentityModel.OidcClient.Browser;
+﻿using IdentityModel.OidcClient.Browser;
 using Prism.Ioc;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using WpfClient.Views;
+using System.Windows;
 
 namespace WpfClient.Infrastructure.Browser
 {
@@ -22,50 +21,61 @@ namespace WpfClient.Infrastructure.Browser
         {
             _options = options;
 
-            var window = _containerProvider.Resolve<WpfBrowserWindow>();
-            window.Width = 900;
-            window.Height = 625;
-            window.Title = "IdentityServer Demo Login";
-
-            var signal = new SemaphoreSlim(0, 1);
-
-            var result = new BrowserResult()
+            var semaphoreSlim = new SemaphoreSlim(0, 1);
+            var browserResult = new BrowserResult()
             {
                 ResultType = BrowserResultType.UserCancel
             };
 
-            window._wpfBrowser.Navigating += (s, e) =>
+            var signinWindow = new Window()
             {
-                if (BrowserIsNavigatingToRedirectUri(e.Uri))
+                Width = 800,
+                Height = 600,
+                Title = "Sign In",
+                WindowStartupLocation = WindowStartupLocation.CenterScreen
+            };
+
+            signinWindow.Closing += (s, e) =>
+            {
+                semaphoreSlim.Release();
+            };
+
+            var webView = new Microsoft.Web.WebView2.Wpf.WebView2();
+            webView.NavigationStarting += (s, e) =>
+            {
+                if (IsBrowserNavigatingToRedirectUri(new Uri(e.Uri)))
                 {
                     e.Cancel = true;
 
-                    result = new BrowserResult()
+                    browserResult = new BrowserResult()
                     {
                         ResultType = BrowserResultType.Success,
-                        Response = e.Uri.AbsoluteUri
+                        Response = new Uri(e.Uri).AbsoluteUri
                     };
 
-                    signal.Release();
-
-                    window.Close();
+                    semaphoreSlim.Release();
+                    signinWindow.Close();
                 }
             };
 
-            window.Closing += (s, e) =>
-            {
-                signal.Release();
-            };
+            signinWindow.Content = webView;
+            signinWindow.Show();
 
-            window.Show();
-            window._wpfBrowser.Source = new Uri(_options.StartUrl);
+            // Initialization
+            await webView.EnsureCoreWebView2Async(null);
 
-            await signal.WaitAsync();
+            // Delete existing Cookies so previous logins won't remembered
+            webView.CoreWebView2.CookieManager.DeleteAllCookies();
 
-            return result;
+            // Navigate
+            webView.CoreWebView2.Navigate(_options.StartUrl);
+
+            await semaphoreSlim.WaitAsync();
+
+            return browserResult;
         }
 
-        private bool BrowserIsNavigatingToRedirectUri(Uri uri)
+        private bool IsBrowserNavigatingToRedirectUri(Uri uri)
         {
             return uri.AbsoluteUri.StartsWith(_options.EndUrl);
         }
