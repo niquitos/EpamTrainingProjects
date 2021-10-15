@@ -1,0 +1,19 @@
+﻿<Window x:Class="WpfClient.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:prism="http://prismlibrary.com/"
+        prism:ViewModelLocator.AutoWireViewModel="True"
+        Title="{Binding Title}" Height="350" Width="525" >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="10" />
+        </Grid.RowDefinitions>
+        <TextBlock Text="{Binding Message}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                   FontSize="16"
+                   FontFamily="Segoe UI Light, San Serif"
+                   TextWrapping="Wrap"/>
+        <Button Grid.Row="1" Command="{Binding AuthorizeCommand}" Width="100">Authorize</Button>
+    </Grid>
+</Window>
