@@ -96,11 +96,13 @@ namespace IdentityServer.Controllers
             }
 
             var username = info.Principal.FindFirst(ClaimTypes.Name).Value;
+            var email = info.Principal.FindFirst(ClaimTypes.Email).Value;
 
             return View("ExternalRegister", new ExternalRegisterViewModel
             {
                 Username = username,
-                ReturnUrl = returnUrl
+                ReturnUrl = returnUrl,
+                Email = email
             });
         }
 
@@ -120,7 +122,7 @@ namespace IdentityServer.Controllers
             }
 
             var username = vm.Username.Replace(" ", "_");
-            var user = new UserModel(username);
+            var user = new UserModel(username) { Email = vm.Email };
             var result = await _userManager.CreateAsync(user);
 
             if (!result.Succeeded)
