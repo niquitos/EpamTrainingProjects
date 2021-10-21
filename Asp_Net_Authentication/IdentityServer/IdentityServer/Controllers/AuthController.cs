@@ -62,11 +62,9 @@ namespace IdentityServer.Controllers
             {
                 return Redirect(vm.ReturnUrl);
             }
-            else if (result.IsLockedOut)
-            {
-
-            }
-
+           
+            vm.ExternalProviders = await _signInManager.GetExternalAuthenticationSchemesAsync();
+            vm.Message = "No user found. Try again";
             return View(vm);
         }
 
@@ -137,7 +135,7 @@ namespace IdentityServer.Controllers
                 return View(vm);
             }
 
-             await _signInManager.SignInAsync(user, false);
+            await _signInManager.SignInAsync(user, false);
 
             return Redirect(vm.ReturnUrl);
         }

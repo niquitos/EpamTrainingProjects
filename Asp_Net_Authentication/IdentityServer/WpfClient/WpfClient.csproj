@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>WpfClient</AssemblyName>
+    <Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="IdentityModel.OidcClient" Version="4.0.0" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.992.28" />
+    <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
+  </ItemGroup>
+</Project>

@@ -5,6 +5,7 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <StartupObject>SqlTestingProject.App</StartupObject>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
