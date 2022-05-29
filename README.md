@@ -27,7 +27,7 @@ A bunch of stuff that I practiced at different times collected in one place for 
   - DB auth
   - OpenAuth2.0
   - IdentityServer 4
-- Testing & Api:
+- Testing & Api & Documentation:
   - MSTest
   - NUnit
   - xUnit
